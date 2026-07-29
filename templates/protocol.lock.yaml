@@ -9,8 +9,7 @@ state:
   initialized_at: YYYY-MM-DDTHH:MM:SSZ
   last_reconciled_at: YYYY-MM-DDTHH:MM:SSZ
   last_applied: 1.0.0
-  applied_migrations:
-    - legacy-to-1.0.0
+  applied_migrations: []
 managed:
   paths:
     - path: AGENTS.md

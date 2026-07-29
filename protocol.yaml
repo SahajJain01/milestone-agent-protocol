@@ -12,20 +12,32 @@ required_target_paths:
   - .agent/client-log.md
   - .agent/decisions/index.md
 templates:
-  AGENTS.md: templates/AGENTS.md
-  .agent/todo.md: templates/todo.md
-  .agent/protocol.lock.yaml: templates/protocol.lock.yaml
-  .agent/client-log.md: templates/client-log.md
-  .agent/decisions/index.md: templates/decisions-index.md
-  .agent/decisions/NNNN-short-name.md: templates/decision.md
+  AGENTS.md:
+    file: templates/AGENTS.md
+    digest: sha256:21ce2337881d5ba5aa907d39360d357a49926be6e17110808f5ad85581527bfe
+  .agent/todo.md:
+    file: templates/todo.md
+    digest: sha256:6ddeca80e0115231213d56863721f340609cf41b6dbd2bf83dc3410531f94045
+  .agent/protocol.lock.yaml:
+    file: templates/protocol.lock.yaml
+    digest: sha256:b82eb70b2538461db6cba3e1902b1c20f272f71eac0e92c77902ad4dd7c91da4
+  .agent/client-log.md:
+    file: templates/client-log.md
+    digest: sha256:1b2b272dfcc6cc29453c279d9557a3ff0400b894f0211fe57af75781efb9556a
+  .agent/decisions/index.md:
+    file: templates/decisions-index.md
+    digest: sha256:5ec9911fe93ed3dbddc4e50806e7303ea255c5de000ac16c3c239dd7c3b86a26
+  .agent/decisions/NNNN-short-name.md:
+    file: templates/decision.md
+    digest: sha256:053ebca4ce46bfd4914536eb003927f4e30552e4b25cd229ebb008966a570197
 migrations:
   - id: legacy-to-1.0.0
     from: legacy
     to: 1.0.0
     file: migrations/legacy-to-1.0.0.md
     digest: sha256:3d6eeb710e689df998b245a31d6d928a8448183d7d18edbb16c76a61f490b521
-forbidden_live_records:
-  - .agent/journal.md
-  - .agent/roadmap.md
-  - .agent/handoff.md
-  - .agent/diary.md
+record_policies:
+  .agent/journal.md: preserve-if-present-as-frozen-archive-never-create
+  .agent/roadmap.md: never-create
+  .agent/handoff.md: never-create
+  .agent/diary.md: never-create
