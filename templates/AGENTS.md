@@ -42,7 +42,6 @@ Add a compact table mapping common target-repository tasks to real files and not
   `Queued`, or `Deferred`, real source anchors, dependencies when relevant, and acceptance bullets.
 - Allocate IDs after checking the current file and Git history; never recycle them.
 - Remove completed tasks and closed milestones from the active todo; Git retains their history.
-- Do not create Now/Next/Later/Backlog/Done boards, roadmaps, handoffs, diaries, or journals.
 - Local tests do not replace required runtime, provider, visual, infrastructure, physical,
   publication, or client evidence.
 
@@ -52,8 +51,7 @@ Add a compact table mapping common target-repository tasks to real files and not
 - `.agent/decisions/` owns indexed immutable decisions.
 - `.agent/client-log.md` owns dated, source-attributed external evidence.
 - `.agent/protocol.lock.yaml` owns current protocol provenance and version state.
-- Never create or append to a session journal. Preserve a pre-existing journal only as a frozen
-  historical archive.
+- Create and reconcile only paths declared by the protocol manifest.
 
 ## CONVENTIONS
 

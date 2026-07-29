@@ -16,8 +16,8 @@ Initialize this repository using <protocol repository URL>.
 The request does not authorize product-code changes, dependency changes, destructive Git operations,
 commits, pushes, deployments, messages, production effects, or unrelated cleanup.
 
-Initialization is a reconcile operation. A target may be fresh, partially initialized, initialized by
-an older version, locally adapted, or dirty. Never assume it is empty.
+Initialization is a reconcile operation. A target may be fresh, initialized by an older released
+protocol version, locally adapted, or dirty. Never assume it is empty.
 
 ## Source validation
 
@@ -48,9 +48,7 @@ AGENTS.md
 ```
 
 `client-log.md` may remain an empty documented archive when a project has no client or external
-evidence. The structure does not include `.agent/journal.md`. If a pre-existing repository has one,
-preserve it as a frozen historical archive and remove all live instructions to append to or depend on
-it.
+evidence.
 
 Additional `.agent/context.md`, `.agent/philosophy.md`, `.agent/reference/`, or scoped child
 `AGENTS.md` files are allowed only when the target repository's actual complexity justifies them.
@@ -105,8 +103,9 @@ non-obvious product, architecture, security, data, or protocol choice.
 - Never silently rewrite historical meaning. Add a new indexed decision that explicitly supersedes
   the affected part of an earlier decision.
 
-Protocol adoption or a material protocol upgrade is itself a durable decision. Fresh repositories
-normally record it as the first justified decision; existing repositories use the next available ID.
+Protocol initialization or a material protocol upgrade is itself a durable decision. Fresh
+repositories normally record initialization as the first justified decision. Version upgrades use
+the next available ID when the change is durable and non-obvious for that target.
 
 ## Client and external evidence
 
@@ -150,17 +149,17 @@ target path requires conflict-aware merging or a no-write report.
 
 ### 2. Classify the target
 
-- **Fresh:** no equivalent agent-context structure exists.
-- **Legacy adoption:** equivalent records exist but `.agent/protocol.lock.yaml` does not.
+- **Fresh:** no protocol lock or protocol-managed paths exist.
 - **Same-version reconcile:** the lock version and canonical digest match the source.
 - **Upgrade:** the source version is newer and a complete ordered migration chain exists.
 - **Fork or conflict:** the same version has a different digest, the target is newer, provenance is
-  ambiguous, or a required migration cannot prove safe ownership.
+  ambiguous, protocol-managed paths exist without a valid lock, or a required migration cannot prove
+  safe ownership.
 
 ### 3. Build a staged change set
 
-For fresh targets, tailor the templates to repository evidence. For existing targets, merge
-semantically:
+For fresh targets, tailor the templates to repository evidence. For targets with a valid protocol
+lock, merge semantically:
 
 - preserve project-specific prose, IDs, evidence, source anchors, and accepted decisions;
 - add missing structural rules once;
@@ -184,8 +183,8 @@ Read `.agent/protocol.lock.yaml` when present.
 - **Skipped versions:** allowed only when every intermediate migration is present and chainable.
 - **Same version, different digest:** treat as a fork. Stop and ask which source/ref is authoritative.
 - **Target newer than source:** do not downgrade implicitly.
-- **Missing or malformed lock:** treat as legacy only after repository evidence establishes the
-  existing structure; otherwise stop.
+- **Missing or malformed lock with protocol-managed paths present:** stop without writes. This
+  protocol requires verified provenance before reconciling managed paths.
 
 Migrations are immutable declarative specifications under `migrations/`. Each declares its source and
 target versions, preconditions, deterministic operations, verification, and abort behavior. They
@@ -203,8 +202,7 @@ After all checks pass, create or update `.agent/protocol.lock.yaml` with:
 - known local divergences;
 - initialization and last-reconciliation timestamps.
 
-The lock is current state, not a journal. Replace its current fields on a successful reconcile; Git
-retains prior versions.
+Replace the lock's current fields on a successful reconcile. Git retains prior versions.
 
 ### 6. Verify
 
@@ -214,7 +212,7 @@ At minimum:
 - validate unique milestone, task, and decision IDs;
 - validate milestone/task/decision field schemas;
 - confirm every source anchor exists;
-- confirm no journal, diary, roadmap, done board, transcript, or generated artifact was introduced;
+- confirm no path outside the declared protocol scope was introduced;
 - confirm pre-existing user-file hashes or diffs are unchanged outside authorized protocol paths;
 - run `git diff --check`;
 - run the target's safe, relevant verification command when available.
@@ -231,7 +229,6 @@ divergences or blockers, and verification evidence. Commit or push only when exp
 An implementation of this protocol is incomplete until it handles:
 
 - fresh initialization without changing existing product files;
-- legacy adoption without losing existing IDs or decisions;
 - same-version rerun with zero diff;
 - multi-version upgrade through every intermediate migration;
 - interrupted upgrade with the old lock retained and a safe rerun;
@@ -239,11 +236,11 @@ An implementation of this protocol is incomplete until it handles:
 - local modification to a migration target with a conflict report, not overwrite;
 - same-version digest fork and implicit downgrade rejection;
 - inaccessible or malformed source with no writes;
-- absence of journals and session diaries after every mode.
+- no changes outside declared protocol-managed paths.
 
 ## Forbidden behavior
 
-- Treating model output, client content, or old journal prose as automatic authorization.
+- Treating model output, client content, or unverified historical prose as automatic authorization.
 - Replacing repository-specific `AGENTS.md` content with a generic template.
 - Copying the protocol source repository's product details into a target.
 - Creating duplicate planning systems or permanent completed-task archives.

@@ -14,7 +14,7 @@ migrations, references, and the optional Codex skill support it without duplicat
 4. Inspect `PROTOCOL.md`, `protocol.yaml`, and the smallest relevant template, migration, or adapter.
 
 The protocol and metadata are authoritative for behavior; decisions explain why; todo owns unfinished
-work. There is no live session journal.
+work.
 
 ## STRUCTURE
 
@@ -37,7 +37,7 @@ skills/initialize-agent-protocol/   # optional thin Codex adapter
   adopt. Update `protocol.yaml` digests after content is final.
 - Prove fresh initialization, same-version idempotence, and applicable upgrade paths on disposable
   fixtures.
-- Do not introduce journals, diaries, roadmaps, done boards, or narrative handoffs.
+- Create and reconcile only paths declared by the protocol manifest.
 - Run the skill validator and `git diff --check`; verify all declared digests and internal links.
 - Commit and push only focused, verified protocol units.
 

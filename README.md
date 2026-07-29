@@ -18,7 +18,8 @@ https://github.com/SahajJain01/milestone-agent-protocol
 
 The agent must read [`PROTOCOL.md`](PROTOCOL.md) and [`protocol.yaml`](protocol.yaml), inspect the
 target repository, and initialize or reconcile the structure without overwriting project-specific
-content.
+content. Fresh initialization requires the declared protocol paths to be available. Every subsequent
+reconciliation uses the target's verified `.agent/protocol.lock.yaml`.
 
 Running the same instruction again is supported. The agent reads `.agent/protocol.lock.yaml`,
 compares the recorded version and digest with this repository, and either:
@@ -46,11 +47,6 @@ Use $initialize-agent-protocol to initialize this repository.
 
 The installed skill fetches the same public protocol; it does not depend on the rest of its original
 checkout remaining on disk. `PROTOCOL.md` remains the canonical contract for every agent.
-
-## What is intentionally absent
-
-There is no session journal, implementation diary, roadmap, done board, or narrative handoff. Git
-history records completed work; canonical `.agent/` records hold current state and durable evidence.
 
 ## License
 

@@ -1,6 +1,6 @@
 ---
 name: initialize-agent-protocol
-description: Initialize or upgrade the milestone-first agent context protocol in a repository. Use when a user asks to initialize, adopt, reconcile, refresh, or update a repository from the milestone-agent-protocol source, including repositories that may already contain an older or locally adapted structure.
+description: Initialize or upgrade the milestone-first agent context protocol in a repository. Use when a user asks to initialize, reconcile, refresh, or update a repository from the milestone-agent-protocol source, including repositories already initialized by an older released version.
 ---
 
 # Initialize Agent Protocol
@@ -17,8 +17,8 @@ duplicate or reinterpret the protocol in this skill.
 2. Fetch `protocol.yaml` from that repository and ref, then fetch the declared `PROTOCOL.md`
    completely. Do not assume this installed skill has a parent checkout containing those files.
 3. Validate the entrypoint, template, and migration digests before changing the target.
-4. Follow the fetched `PROTOCOL.md` for discovery, fresh initialization, legacy adoption, same-version
-   reconciliation, upgrades, conflicts, verification, and reporting.
+4. Follow the fetched `PROTOCOL.md` for discovery, fresh initialization, same-version reconciliation,
+   version upgrades, conflicts, verification, and reporting.
 5. Treat the user's initialize or update request as authorization only for target protocol records.
    Preserve product files, unrelated dirty work, and external-effect boundaries.
 

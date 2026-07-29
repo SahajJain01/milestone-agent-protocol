@@ -20,7 +20,7 @@ agents.
   complete ordered migration chain, and forks, downgrades, or local conflicts fail closed.
 - `skills/initialize-agent-protocol` is a thin optional Codex adapter that routes to the same
   canonical files.
-- The protocol has no live journal. Git and canonical records provide provenance.
+- Only paths declared by the protocol manifest are managed.
 
 ## Reason
 
