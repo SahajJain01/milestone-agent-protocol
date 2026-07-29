@@ -1,0 +1,30 @@
+protocol:
+  source: https://github.com/OWNER/milestone-agent-protocol
+  requested_ref: main
+  resolved_commit: COMMIT_SHA_IF_AVAILABLE
+  version: 1.0.0
+  entrypoint: PROTOCOL.md
+  entrypoint_digest: sha256:VERIFIED_DIGEST
+state:
+  initialized_at: YYYY-MM-DDTHH:MM:SSZ
+  last_reconciled_at: YYYY-MM-DDTHH:MM:SSZ
+  last_applied: 1.0.0
+  applied_migrations:
+    - legacy-to-1.0.0
+managed:
+  paths:
+    - path: AGENTS.md
+      ownership: structural-contract
+    - path: .agent/todo.md
+      ownership: schema-only
+    - path: .agent/decisions/index.md
+      ownership: schema-only
+    - path: .agent/client-log.md
+      ownership: schema-only
+  rules:
+    - canonical-context-order
+    - milestone-first-todo
+    - immutable-indexed-decisions
+    - evidence-is-not-authorization
+    - no-live-session-journal
+local_divergence: []

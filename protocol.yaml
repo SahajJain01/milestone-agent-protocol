@@ -1,0 +1,31 @@
+name: milestone-agent-protocol
+schema_version: 1
+version: 1.0.0
+entrypoint: PROTOCOL.md
+entrypoint_digest: sha256:e8a83c49c1121a7d3b545c8c7c2ff53afd45766ee316fdc207e57bb1a4a09917
+canonical_repository: https://github.com/SahajJain01/milestone-agent-protocol
+default_ref: main
+required_target_paths:
+  - AGENTS.md
+  - .agent/todo.md
+  - .agent/protocol.lock.yaml
+  - .agent/client-log.md
+  - .agent/decisions/index.md
+templates:
+  AGENTS.md: templates/AGENTS.md
+  .agent/todo.md: templates/todo.md
+  .agent/protocol.lock.yaml: templates/protocol.lock.yaml
+  .agent/client-log.md: templates/client-log.md
+  .agent/decisions/index.md: templates/decisions-index.md
+  .agent/decisions/NNNN-short-name.md: templates/decision.md
+migrations:
+  - id: legacy-to-1.0.0
+    from: legacy
+    to: 1.0.0
+    file: migrations/legacy-to-1.0.0.md
+    digest: sha256:3d6eeb710e689df998b245a31d6d928a8448183d7d18edbb16c76a61f490b521
+forbidden_live_records:
+  - .agent/journal.md
+  - .agent/roadmap.md
+  - .agent/handoff.md
+  - .agent/diary.md

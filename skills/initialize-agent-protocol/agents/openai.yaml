@@ -1,0 +1,4 @@
+interface:
+  display_name: "Initialize Agent Protocol"
+  short_description: "Initialize agent protocol workflows"
+  default_prompt: "Use $initialize-agent-protocol to initialize the agent protocol in this repository."
