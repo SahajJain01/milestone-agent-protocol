@@ -12,10 +12,12 @@ duplicate or reinterpret the protocol in this skill.
 
 ## Workflow
 
-1. Resolve this skill's repository root.
-2. Read `protocol.yaml` and then the declared `PROTOCOL.md` completely.
-3. Validate the entrypoint digest and migration inventory before changing the target.
-4. Follow `PROTOCOL.md` for discovery, fresh initialization, legacy adoption, same-version
+1. Use the protocol repository URL in the user's request. If the user invokes the skill without a
+   source URL, default to `https://github.com/SahajJain01/milestone-agent-protocol`.
+2. Fetch `protocol.yaml` from that repository and ref, then fetch the declared `PROTOCOL.md`
+   completely. Do not assume this installed skill has a parent checkout containing those files.
+3. Validate the entrypoint, template, and migration digests before changing the target.
+4. Follow the fetched `PROTOCOL.md` for discovery, fresh initialization, legacy adoption, same-version
    reconciliation, upgrades, conflicts, verification, and reporting.
 5. Treat the user's initialize or update request as authorization only for target protocol records.
    Preserve product files, unrelated dirty work, and external-effect boundaries.

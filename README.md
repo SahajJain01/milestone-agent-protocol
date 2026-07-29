@@ -34,11 +34,18 @@ Codex users may install the thin skill in
 [`skills/initialize-agent-protocol`](skills/initialize-agent-protocol/SKILL.md), then ask:
 
 ```text
+Install the initialize-agent-protocol skill from
+https://github.com/SahajJain01/milestone-agent-protocol/tree/main/skills/initialize-agent-protocol
+```
+
+After installation:
+
+```text
 Use $initialize-agent-protocol to initialize this repository.
 ```
 
-The skill only routes Codex to the same public protocol. `PROTOCOL.md` remains the canonical contract
-for every agent.
+The installed skill fetches the same public protocol; it does not depend on the rest of its original
+checkout remaining on disk. `PROTOCOL.md` remains the canonical contract for every agent.
 
 ## What is intentionally absent
 
