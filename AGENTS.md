@@ -31,6 +31,9 @@ skills/initialize-agent-protocol/   # optional thin Codex adapter
 ## WORKING PROTOCOL
 
 - Advance one task under one milestone and preserve immutable IDs.
+- Reopen a closed milestone only to restore or preserve its original end goal. Reuse its historical
+  ID and outcome contract, record a dated reason and stable evidence anchor, and allocate new task
+  IDs. Create a new milestone when the end goal changes materially.
 - Keep normative rules in `PROTOCOL.md`; adapters and references point to it instead of copying it.
 - Bump the semantic version for every published normative change.
 - Add an immutable contiguous migration for changes that existing initialized repositories must

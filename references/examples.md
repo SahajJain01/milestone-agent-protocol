@@ -35,6 +35,40 @@ No active milestones.
 - A clean fixture installs and runs the package without repository-local dependencies.
 ```
 
+## Reopened outcome
+
+Suppose `M-004` was closed and removed after `T-011` completed. Weeks later, issue `#482` shows that
+the published command-line release fails on a supported clean machine. Reconstruct the latest closed
+definition from Git history and return it to the active todo:
+
+```markdown
+## M-004 — Publish a verified command-line release
+
+**End goal:** Users can install and run a reproducible signed release.
+
+**Close when:** Package installation, signature verification, and a clean-machine smoke test pass.
+
+**Reopened:** 2026-07-30 — Issue #482 reproduces an installation failure on a supported clean
+machine.
+
+### T-019 — Fix installation on the affected clean-machine configuration
+
+**State:** Active
+
+**Source / code:** Issue #482; `src/installer`; `tests/install`.
+
+**Dependencies:** None.
+
+**Acceptance:**
+
+- The issue #482 reproduction installs and runs successfully.
+- The original package, signature, and clean-machine closure checks pass again.
+```
+
+`M-004` keeps its identity and outcome contract, while `T-019` is new. `T-011` remains completed in
+Git history. If the requested work instead introduces a different release outcome, allocate a new
+milestone.
+
 ## Safe repeated initialization
 
 A target locked at version `1.1.0` is initialized again against source version `1.3.0`. The agent

@@ -7,6 +7,11 @@ Completed tasks and closed milestones leave this file; Git retains their history
 Do not invent work to populate this template. If repository evidence shows no unfinished work,
 replace the example block with: "No active milestones."
 
+To reopen a closed milestone, reconstruct its latest historical definition under the same milestone
+ID and name, preserve `End goal` and `Close when`, add
+`**Reopened:** YYYY-MM-DD — Reason and stable evidence anchor.`, and add at least one unfinished task
+with a new, never-used task ID. Do not copy completed tasks back into this file.
+
 ## M-001 — Observable outcome
 
 **End goal:** Durable outcome, not a component, sprint, or collection of chores.

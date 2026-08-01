@@ -41,6 +41,9 @@ Add a compact table mapping common target-repository tasks to real files and not
 - Tasks use immutable `T-###` IDs, exactly one owning milestone, a state of `Active`, `Blocked`,
   `Queued`, or `Deferred`, real source anchors, dependencies when relevant, and acceptance bullets.
 - Allocate IDs after checking the current file and Git history; never recycle them.
+- Reopen a closed milestone only for work that restores or preserves its original end goal. Reuse
+  its historical ID and outcome contract, record a dated reason and evidence anchor, and add only
+  new task IDs. Create a new milestone when the end goal changes materially.
 - Remove completed tasks and closed milestones from the active todo; Git retains their history.
 - Local tests do not replace required runtime, provider, visual, infrastructure, physical,
   publication, or client evidence.

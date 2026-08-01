@@ -5,6 +5,8 @@ This reference is explanatory. `PROTOCOL.md` is normative.
 - One canonical unfinished-work record; no duplicate planning systems.
 - One owning milestone per unfinished task.
 - Immutable milestone, task, decision, and migration identities.
+- Reopening restores a historical milestone identity and outcome contract while adding only new task
+  identities.
 - Observable outcome closure remains separate from implementation completion.
 - Source/tests establish behavior; decisions explain why; external evidence is not authorization.
 - Repository-specific guidance is discovered, never copied from the protocol source.

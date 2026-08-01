@@ -91,6 +91,16 @@ closes only when its separate closure condition and every closure-required task 
 provider, visual, infrastructure, physical, publication, or client gates cannot be replaced by local
 tests. Remove completed tasks and closed milestones from the active todo; Git retains their history.
 
+A closed milestone may be reopened when new evidence shows that unfinished work is necessary to
+restore or preserve its original end goal. Reconstruct the latest closed milestone definition from
+Git history under the same milestone ID and name, preserve its `End goal` and `Close when`, add a
+`Reopened` field containing an ISO date, reason, and stable evidence anchor, and add at least one
+unfinished task with a new, never-used task ID. Do not restore completed tasks or allocate a new
+milestone ID for the same outcome. If the work materially changes the original end goal, create a
+new milestone instead. A reopened milestone is active and follows the normal closure rules; remove
+it again after its closure condition and closure-required tasks pass. Git history retains each
+reopen and reclose cycle.
+
 ## Decisions
 
 Use `.agent/decisions/index.md` plus one immutable, four-digit decision file per durable,
@@ -211,6 +221,8 @@ At minimum:
 - validate required paths and internal links;
 - validate unique milestone, task, and decision IDs;
 - validate milestone/task/decision field schemas;
+- validate that reopened milestones reuse a historical milestone identity, include dated evidence,
+  preserve the historical outcome contract, and contain only newly allocated unfinished task IDs;
 - confirm every source anchor exists;
 - confirm no path outside the declared protocol scope was introduced;
 - confirm pre-existing user-file hashes or diffs are unchanged outside authorized protocol paths;
@@ -236,7 +248,8 @@ An implementation of this protocol is incomplete until it handles:
 - local modification to a migration target with a conflict report, not overwrite;
 - same-version digest fork and implicit downgrade rejection;
 - inaccessible or malformed source with no writes;
-- no changes outside declared protocol-managed paths.
+- no changes outside declared protocol-managed paths;
+- reopen and reclose a historical milestone without recycling milestone or task identities.
 
 ## Forbidden behavior
 
@@ -244,6 +257,8 @@ An implementation of this protocol is incomplete until it handles:
 - Replacing repository-specific `AGENTS.md` content with a generic template.
 - Copying the protocol source repository's product details into a target.
 - Creating duplicate planning systems or permanent completed-task archives.
+- Reopening a milestone under a new ID, restoring its completed tasks, or changing its historical
+  outcome contract to disguise a new outcome.
 - Recording secrets, full PII, raw prompts, or transcripts.
 - Hiding conflicts with stashes, resets, forced checkouts, or broad generated rewrites.
 - Updating the protocol lock before the corresponding structure and migrations verify.

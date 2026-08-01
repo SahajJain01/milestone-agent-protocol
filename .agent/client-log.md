@@ -22,3 +22,12 @@ The user required the reusable source to define only the structure it manages. F
 uses available managed paths; later reconciliation requires verified lock provenance.
 
 **Absorbed outcome:** M-002/T-002 and ADR 0002.
+
+## 2026-07-30 — Accepted milestone reopening
+
+**Source:** Current Codex task.
+
+The user requested that a delivered milestone be reopenable when later evidence, such as a bug found
+weeks after delivery, requires another task against that milestone.
+
+**Absorbed outcome:** M-003/T-003 and ADR 0003.
