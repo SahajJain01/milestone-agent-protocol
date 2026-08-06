@@ -17,6 +17,8 @@ No active milestones.
 ```markdown
 ## M-004 — Publish a verified command-line release
 
+**State:** Active
+
 **End goal:** Users can install and run a reproducible signed release.
 
 **Close when:** Package installation, signature verification, and a clean-machine smoke test pass.
@@ -43,6 +45,8 @@ definition from Git history and return it to the active todo:
 
 ```markdown
 ## M-004 — Publish a verified command-line release
+
+**State:** Active
 
 **End goal:** Users can install and run a reproducible signed release.
 
@@ -92,3 +96,40 @@ only when no current outcome owns it.
 The pause and stock requests remain unverified until their own audits. If stock controls later prove
 to cover the request completely, cite that behavior and its tests without inventing a stock task.
 None of these planning changes authorizes implementation or deployment.
+
+Suppose enough accepted answers place the pause behavior under `M-006`, but the human says, "Skip
+whether pausing takes effect immediately or waits for catalog publication; I need to ask the client."
+Create a new task such as `T-017` under `M-006`, set both the task and milestone to `Blocked`, and
+preserve the exact client-ready question:
+
+```markdown
+## M-006 — Temporarily pause new orders
+
+**State:** Blocked
+
+**End goal:** Operators can temporarily stop new confirmations while preserving safe customer use.
+
+**Close when:** The accepted pause contract passes operator and customer acceptance evidence.
+
+### T-017 — Ask when a pause takes effect
+
+**State:** Blocked
+
+**Question for client:** Should Pause and Resume take effect immediately, without using the catalog
+Publish action?
+
+**Source / code:** Dated intake anchor and the current cross-questioning session.
+
+**Dependencies:** Client response.
+
+**Acceptance:**
+
+- The answer is archived under a dated accepted client-log anchor.
+- The resulting fact is added to M-006 and affected task or decision language is reconciled.
+```
+
+At the end of the pass, include `M-006 / T-017` in the consolidated unsent question list. If the
+client answers "immediately," add that fact and its evidence anchor to M-006, update any affected
+acceptance conditions, remove T-017, and return M-006 to `Active` if it has no other blocker. If the
+question was skipped before any accepted outcome could identify an honest milestone, keep the
+feature unverified instead of creating a speculative container.

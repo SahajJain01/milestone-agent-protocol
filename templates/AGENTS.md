@@ -37,7 +37,8 @@ Add a compact table mapping common target-repository tasks to real files and not
 
 ## MILESTONE AND TASK PROTOCOL
 
-- Milestones use immutable `M-###` IDs and include `End goal` and observable `Close when`.
+- Milestones use immutable `M-###` IDs and include a state of `Active` or `Blocked`, `End goal`, and
+  observable `Close when`.
 - Tasks use immutable `T-###` IDs, exactly one owning milestone, a state of `Active`, `Blocked`,
   `Queued`, or `Deferred`, real source anchors, dependencies when relevant, and acceptance bullets.
 - Allocate IDs after checking the current file and Git history; never recycle them.
@@ -47,6 +48,8 @@ Add a compact table mapping common target-repository tasks to real files and not
 - Remove completed tasks and closed milestones from the active todo; Git retains their history.
 - Local tests do not replace required runtime, provider, visual, infrastructure, physical,
   publication, or client evidence.
+- A milestone containing any unfinished skipped client-question task is `Blocked` and cannot close;
+  unrelated safe tasks may continue.
 
 ## DOCUMENTATION RECORDS
 
@@ -71,6 +74,14 @@ Add a compact table mapping common target-repository tasks to real files and not
 - Link accepted answers to a dated evidence anchor. Refine existing scope when its outcome is
   unchanged; split independently verifiable work or create a new milestone only for a distinct
   durable outcome. Leave all unreviewed items explicitly unverified.
+- If the human explicitly skips or cannot answer a material question, preserve each independently
+  answerable question as a `Blocked` client-question task under its accepted owning milestone and
+  mark that milestone `Blocked`. Keep exact client-ready wording and do not invent a milestone when
+  no accepted outcome can yet be identified.
+- At the end of the pass, provide one unsent question list grouped by milestone/task ID. When answers
+  return, archive them as accepted evidence, add their facts to the corresponding milestone, update
+  affected scope records, remove the completed question tasks, and unblock the milestone only when
+  no skipped question or other blocker remains.
 - Formalizing scope authorizes planning-record changes only, not implementation or external effects.
 
 ## CONVENTIONS

@@ -73,10 +73,11 @@ unfinished work. External evidence is historical input, not automatic authorizat
 - Milestones use immutable sequential `M-###` IDs.
 - Tasks use immutable sequential `T-###` IDs.
 - Check the current file and Git history before allocating the next ID; never recycle an ID.
-- Every milestone has a concise name, an `End goal`, and an observable `Close when`.
+- Every milestone has a concise name, a state of `Active` or `Blocked`, an `End goal`, and an
+  observable `Close when`.
 - Every unfinished task has exactly one owning milestone, one state, real source or code anchors,
   dependencies when relevant, and concrete acceptance bullets.
-- Allowed states are `Active`, `Blocked`, `Queued`, and `Deferred`.
+- Task states are `Active`, `Blocked`, `Queued`, and `Deferred`.
 - Cross-milestone dependencies reference the owning milestone and task IDs; never duplicate a task.
 - Do not create top-level Now, Next, Later, Backlog, Done, or standalone blocked-task sections.
 - Do not invent work merely to populate the template. If no unfinished work is evidenced, state that
@@ -85,6 +86,11 @@ unfinished work. External evidence is historical input, not automatic authorizat
 Changing a task's method, dependencies, or acceptance detail does not create a new ID while its
 outcome remains the same. Split independently verifiable outcomes and preserve the original ID for
 the outcome closest to its historical meaning.
+
+A milestone is `Blocked` when an unresolved dependency prevents its outcome or closure. It must be
+`Blocked` whenever it contains an unfinished skipped client-question task. Other safe tasks may
+continue while the milestone is blocked, but the milestone cannot close. Return it to `Active` only
+after every skipped client-question task is resolved and no other explicit blocker remains.
 
 A task completes only when every acceptance bullet passes on the matching surface. A milestone
 closes only when its separate closure condition and every closure-required task pass. Runtime,
@@ -97,9 +103,9 @@ Git history under the same milestone ID and name, preserve its `End goal` and `C
 `Reopened` field containing an ISO date, reason, and stable evidence anchor, and add at least one
 unfinished task with a new, never-used task ID. Do not restore completed tasks or allocate a new
 milestone ID for the same outcome. If the work materially changes the original end goal, create a
-new milestone instead. A reopened milestone is active and follows the normal closure rules; remove
-it again after its closure condition and closure-required tasks pass. Git history retains each
-reopen and reclose cycle.
+new milestone instead. A reopened milestone has an `Active` or `Blocked` state and follows the normal
+closure rules; remove it again after its closure condition and closure-required tasks pass. Git
+history retains each reopen and reclose cycle.
 
 ## Decisions
 
@@ -148,18 +154,35 @@ promote the intake directly into accepted scope. Use this loop:
    allowed and blocked behavior, state transitions, data/configuration authority, customer/operator
    experience, failure and recovery behavior, side effects, verification evidence, ownership, and
    priority. Do not turn this into a generic questionnaire or ask again when accepted evidence
-   already supplies the answer. If the human does not resolve a material choice, leave the feature
-   unverified or record a blocked discovery/decision task rather than guessing.
+   already supplies the answer.
 5. **Reconcile the accepted outcome.** Add a dated client-log summary of the accepted answers and
    link every resulting task or decision to it. Update an existing owning task when its intended
    outcome is unchanged. Split independently verifiable outcomes when needed. Create a new milestone
-   only for a genuinely distinct durable outcome, with an explicit priority, `End goal`, observable
-   `Close when`, and concrete task acceptance conditions. Never duplicate existing scope.
+   only for a genuinely distinct durable outcome, with an explicit priority, `State`, `End goal`,
+   observable `Close when`, and concrete task acceptance conditions. Never duplicate existing scope.
+6. **Persist explicitly skipped questions.** When the human says to skip a material question or
+   cannot answer it, do not leave it only in conversation. If accepted evidence identifies a
+   corresponding existing or new milestone, create or update one `Blocked` client-question task for
+   each independently answerable question under that milestone and mark the milestone `Blocked`.
+   Preserve the exact client-ready question in a `Question for client` field, link its source, and
+   make acceptance require both a returned answer and its reconciliation into scope. Do not invent a
+   speculative milestone when the unanswered choice prevents identifying any accepted outcome; keep
+   that feature unverified until it can be placed honestly.
+7. **Hand off and resolve client questions.** At the end of the cross-questioning pass, present every
+   unfinished client question as one consolidated, unsent list grouped by milestone and task ID. A
+   returned answer is not enough by itself to complete the task: archive it under a dated accepted
+   client-log anchor, add the resulting fact with that anchor to an `Accepted facts` subsection in
+   the corresponding milestone, and refine its end goal, closure, tasks, or durable decisions when
+   materially affected.
+   Then remove the completed question task. Return the milestone to `Active` only when no skipped
+   client-question task and no other explicit blocker remains.
 
 Work through multi-feature intake one coherent feature at a time so the human may accept, defer,
 reject, or leave each item unverified independently. Summarize the resolved contract before
 formalization when multiple answers must be reconciled, but do not require redundant approval for a
-choice the human already stated explicitly.
+choice the human already stated explicitly. Do not merge separate client questions into one task
+unless they are tightly coupled and require one indivisible answer; each question must remain
+individually visible in the final handoff.
 
 Scope promotion authorizes only planning-record changes. It does not authorize product-code edits,
 dependency changes, commits, pushes, deployments, publications, outbound messages, production-data
@@ -260,6 +283,9 @@ At minimum:
 - validate milestone/task/decision field schemas;
 - validate that accepted client-derived tasks and decisions link to a stable evidence anchor and that
   unresolved features from the same intake remain explicitly unverified;
+- validate that every unfinished skipped client-question task is `Blocked`, preserves client-ready
+  wording, belongs to a `Blocked` milestone, and requires answer archival plus milestone-fact
+  reconciliation before completion;
 - validate that reopened milestones reuse a historical milestone identity, include dated evidence,
   preserve the historical outcome contract, and contain only newly allocated unfinished task IDs;
 - confirm every source anchor exists;
@@ -288,15 +314,20 @@ An implementation of this protocol is incomplete until it handles:
 - same-version digest fork and implicit downgrade rejection;
 - inaccessible or malformed source with no writes;
 - no changes outside declared protocol-managed paths;
-- reopen and reclose a historical milestone without recycling milestone or task identities.
+- reopen and reclose a historical milestone without recycling milestone or task identities;
 - reconcile a multi-feature external intake one feature at a time without promoting unanswered
   items, duplicating existing scope, or inventing work for fully supported behavior.
+- persist skipped material questions as milestone-blocking client-question tasks, produce the grouped
+  handoff list, then absorb returned answers and unblock the milestone without losing provenance.
 
 ## Forbidden behavior
 
 - Treating model output, client content, or unverified historical prose as automatic authorization.
 - Promoting an external feature list directly into accepted milestones or tasks without auditing
-  existing coverage and resolving material human choices.
+  existing coverage and either answering material human choices or explicitly preserving skipped
+  questions under accepted milestone ownership.
+- Dropping an explicitly skipped material client question, closing its milestone while the question
+  remains unresolved, or treating a drafted question list as authorization to contact the client.
 - Replacing repository-specific `AGENTS.md` content with a generic template.
 - Copying the protocol source repository's product details into a target.
 - Creating duplicate planning systems or permanent completed-task archives.

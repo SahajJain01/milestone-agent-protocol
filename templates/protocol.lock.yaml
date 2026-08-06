@@ -26,6 +26,7 @@ managed:
     - immutable-indexed-decisions
     - evidence-is-not-authorization
     - evidence-to-scope-cross-questioning
+    - skipped-client-questions-block-milestones
     - declared-paths-only
     - auditable-milestone-reopening
 local_divergence: []
