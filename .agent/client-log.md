@@ -31,3 +31,15 @@ The user requested that a delivered milestone be reopenable when later evidence,
 weeks after delivery, requires another task against that milestone.
 
 **Absorbed outcome:** M-003/T-003 and ADR 0003.
+
+## 2026-08-06 — Accepted evidence-to-scope cross-questioning
+
+**Source:** Current Codex task.
+
+After using the protocol in a product repository, the user identified the feature-by-feature
+cross-questioning process as valuable: safely archive a received client feature list, audit whether
+each feature already exists and whether it fully covers the request, then resolve material product
+questions with the human before formalizing a gap as a milestone or task. The user requested that
+the reusable protocol enforce this behavior for future initialized and upgraded repositories.
+
+**Absorbed outcome:** M-004/T-004 and ADR 0004.

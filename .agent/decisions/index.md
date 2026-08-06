@@ -8,3 +8,4 @@ silently rewriting history.
 | 0001 | [Use a platform-neutral versioned protocol with a thin optional adapter](0001-platform-neutral-versioned-protocol.md) | Canonical source, upgrade state, migrations, and adapter boundary | Accepted |
 | 0002 | [Use a positive-only initialization contract](0002-positive-only-initialization-contract.md) | Fresh initialization, managed scope, and lock-required reconciliation | Accepted |
 | 0003 | [Reopen closed milestones under their original identity](0003-reopen-closed-milestones.md) | Post-closure work, identity reuse, and task history | Accepted |
+| 0004 | [Cross-question external feature evidence before accepting scope](0004-cross-question-feature-evidence.md) | Client/external feature intake, coverage audit, and milestone/task promotion | Accepted |
