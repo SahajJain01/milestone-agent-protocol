@@ -31,6 +31,11 @@ skills/initialize-agent-protocol/   # optional thin Codex adapter
 ## WORKING PROTOCOL
 
 - Advance one task under one milestone and preserve immutable IDs.
+- When external evidence proposes features, archive the complete safe intake as unverified, audit
+  one coherent feature against code/tests and existing scope, and cross-question only material human
+  choices before accepting or formalizing its gap. Persist explicitly skipped material questions as
+  blocked tasks under their owning milestones, block those milestones until reconciliation, and
+  provide a grouped unsent client-question handoff. Never batch-promote unanswered items.
 - Reopen a closed milestone only to restore or preserve its original end goal. Reuse its historical
   ID and outcome contract, record a dated reason and stable evidence anchor, and allocate new task
   IDs. Create a new milestone when the end goal changes materially.

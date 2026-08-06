@@ -31,3 +31,29 @@ The user requested that a delivered milestone be reopenable when later evidence,
 weeks after delivery, requires another task against that milestone.
 
 **Absorbed outcome:** M-003/T-003 and ADR 0003.
+
+## 2026-08-06 — Accepted evidence-to-scope cross-questioning
+
+**Source:** Current Codex task.
+
+After using the protocol in a product repository, the user identified the feature-by-feature
+cross-questioning process as valuable: safely archive a received client feature list, audit whether
+each feature already exists and whether it fully covers the request, then resolve material product
+questions with the human before formalizing a gap as a milestone or task. The user requested that
+the reusable protocol enforce this behavior for future initialized and upgraded repositories.
+
+**Absorbed outcome:** M-004/T-004 and ADR 0004.
+
+## 2026-08-06 — Accepted skipped client-question lifecycle
+
+**Source:** Current Codex task.
+
+The user clarified that when the human cannot answer a material cross-question and says to skip it,
+the protocol must preserve that exact question as unfinished work under the corresponding milestone.
+At the end of cross-questioning, the agent must provide a consolidated client-ready question list.
+The milestone remains blocked while any skipped-question task is unresolved. When the client answers,
+the agent records the response as accepted evidence, incorporates the resulting facts into the
+milestone, completes and removes the question task, and unblocks the milestone only after all such
+questions are resolved.
+
+**Absorbed outcome:** M-005/T-005 and ADR 0005.
