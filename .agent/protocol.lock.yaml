@@ -1,17 +1,18 @@
 protocol:
   source: https://github.com/SahajJain01/milestone-agent-protocol
   requested_ref: main
-  resolved_commit: c86a1bb1795b8b77510bdc6f35cc10ed19ae3820
-  version: 2.1.0
+  resolved_commit: 78c8794cd580f558a3a798ad00b3cc057ae860c9
+  version: 2.2.0
   entrypoint: PROTOCOL.md
-  entrypoint_digest: sha256:de6c730cf2b06fda8deca373cb7b522f16b58467e43dc52824000f87f70913fa
+  entrypoint_digest: sha256:74fe9b953ab9853120291217bf2dda36181d7d05f2f564332906f48aef7baa2c
 state:
   initialized_at: 2026-07-29T08:02:53Z
-  last_reconciled_at: 2026-07-30T01:26:54Z
-  last_applied: 2.1.0
+  last_reconciled_at: 2026-08-06T09:56:39Z
+  last_applied: 2.2.0
   applied_migrations:
     - 1.0.0-to-2.0.0
     - 2.0.0-to-2.1.0
+    - 2.1.0-to-2.2.0
 managed:
   paths:
     - path: AGENTS.md
@@ -27,6 +28,7 @@ managed:
     - milestone-first-todo
     - immutable-indexed-decisions
     - evidence-is-not-authorization
+    - evidence-to-scope-cross-questioning
     - declared-paths-only
     - auditable-milestone-reopening
 local_divergence: []
