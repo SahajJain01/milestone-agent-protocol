@@ -5,6 +5,10 @@ authoritative unfinished-work record, immutable architectural decisions, evidenc
 provenance, scoped `AGENTS.md` guidance, and a deterministic way to initialize or upgrade the
 structure later.
 
+External feature lists are reconciled through an evidence-to-scope loop: audit existing coverage,
+cross-question material product ambiguity one feature at a time, and formalize only accepted gaps
+without duplicating work or treating client input as implementation authorization.
+
 The protocol is agent-agnostic. A plugin is not required.
 
 ## Use from any LLM agent

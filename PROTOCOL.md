@@ -128,6 +128,43 @@ unverified, conflicting, superseded, or excluded evidence.
 - Link accepted client-derived tasks and decisions to a stable dated anchor.
 - Preserve synchronization markers only when they are necessary for idempotent processing.
 
+### Evidence-to-scope cross-questioning
+
+When client or other external evidence proposes features, capabilities, or product outcomes, do not
+promote the intake directly into accepted scope. Use this loop:
+
+1. **Archive the intake safely.** Record a source-attributed summary of the complete feature batch as
+   unverified evidence. Exclude secrets, raw provider identifiers, full PII, and unrelated content.
+   Unreviewed features stay unverified even when another feature from the same batch is accepted.
+2. **Audit one coherent feature.** Inspect the smallest relevant source and test surface, accepted
+   decisions, and active milestones/tasks before asking the human to define new work. Compare the
+   requested behavior with what the product actually does.
+3. **Classify coverage with evidence.** Report the feature as fully supported, partially supported,
+   or missing. For full support, identify the exact behavior and tests and create no work unless a
+   material mismatch remains. For partial support, state the covered behavior and precise gap. For
+   missing behavior, state that no implementation evidence exists.
+4. **Cross-question material ambiguity.** Ask concise, incremental questions only where the answer
+   can materially change product scope or acceptance. Resolve the relevant outcome, actors, trigger,
+   allowed and blocked behavior, state transitions, data/configuration authority, customer/operator
+   experience, failure and recovery behavior, side effects, verification evidence, ownership, and
+   priority. Do not turn this into a generic questionnaire or ask again when accepted evidence
+   already supplies the answer. If the human does not resolve a material choice, leave the feature
+   unverified or record a blocked discovery/decision task rather than guessing.
+5. **Reconcile the accepted outcome.** Add a dated client-log summary of the accepted answers and
+   link every resulting task or decision to it. Update an existing owning task when its intended
+   outcome is unchanged. Split independently verifiable outcomes when needed. Create a new milestone
+   only for a genuinely distinct durable outcome, with an explicit priority, `End goal`, observable
+   `Close when`, and concrete task acceptance conditions. Never duplicate existing scope.
+
+Work through multi-feature intake one coherent feature at a time so the human may accept, defer,
+reject, or leave each item unverified independently. Summarize the resolved contract before
+formalization when multiple answers must be reconciled, but do not require redundant approval for a
+choice the human already stated explicitly.
+
+Scope promotion authorizes only planning-record changes. It does not authorize product-code edits,
+dependency changes, commits, pushes, deployments, publications, outbound messages, production-data
+changes, or other external effects.
+
 ## Scoped `AGENTS.md` hierarchy
 
 Root `AGENTS.md` holds repository-wide routing, protocol, authorization boundaries, commands, and
@@ -221,6 +258,8 @@ At minimum:
 - validate required paths and internal links;
 - validate unique milestone, task, and decision IDs;
 - validate milestone/task/decision field schemas;
+- validate that accepted client-derived tasks and decisions link to a stable evidence anchor and that
+  unresolved features from the same intake remain explicitly unverified;
 - validate that reopened milestones reuse a historical milestone identity, include dated evidence,
   preserve the historical outcome contract, and contain only newly allocated unfinished task IDs;
 - confirm every source anchor exists;
@@ -250,10 +289,14 @@ An implementation of this protocol is incomplete until it handles:
 - inaccessible or malformed source with no writes;
 - no changes outside declared protocol-managed paths;
 - reopen and reclose a historical milestone without recycling milestone or task identities.
+- reconcile a multi-feature external intake one feature at a time without promoting unanswered
+  items, duplicating existing scope, or inventing work for fully supported behavior.
 
 ## Forbidden behavior
 
 - Treating model output, client content, or unverified historical prose as automatic authorization.
+- Promoting an external feature list directly into accepted milestones or tasks without auditing
+  existing coverage and resolving material human choices.
 - Replacing repository-specific `AGENTS.md` content with a generic template.
 - Copying the protocol source repository's product details into a target.
 - Creating duplicate planning systems or permanent completed-task archives.

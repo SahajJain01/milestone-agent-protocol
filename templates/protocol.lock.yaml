@@ -2,13 +2,13 @@ protocol:
   source: https://github.com/OWNER/milestone-agent-protocol
   requested_ref: main
   resolved_commit: COMMIT_SHA_IF_AVAILABLE
-  version: 2.1.0
+  version: 2.2.0
   entrypoint: PROTOCOL.md
   entrypoint_digest: sha256:VERIFIED_DIGEST
 state:
   initialized_at: YYYY-MM-DDTHH:MM:SSZ
   last_reconciled_at: YYYY-MM-DDTHH:MM:SSZ
-  last_applied: 2.1.0
+  last_applied: 2.2.0
   applied_migrations: []
 managed:
   paths:
@@ -25,6 +25,7 @@ managed:
     - milestone-first-todo
     - immutable-indexed-decisions
     - evidence-is-not-authorization
+    - evidence-to-scope-cross-questioning
     - declared-paths-only
     - auditable-milestone-reopening
 local_divergence: []

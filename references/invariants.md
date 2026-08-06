@@ -9,6 +9,10 @@ This reference is explanatory. `PROTOCOL.md` is normative.
   identities.
 - Observable outcome closure remains separate from implementation completion.
 - Source/tests establish behavior; decisions explain why; external evidence is not authorization.
+- External feature intake remains unverified until existing coverage is audited and material product
+  choices are resolved with the human one coherent feature at a time.
+- Fully supported requests create coverage findings, partial gaps refine their existing owner, and
+  new milestones represent only genuinely distinct accepted outcomes.
 - Repository-specific guidance is discovered, never copied from the protocol source.
 - Reinitialization preserves project content and converges without duplicate records.
 - Protocol state is recorded by the current lock and Git history.

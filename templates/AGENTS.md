@@ -56,6 +56,23 @@ Add a compact table mapping common target-repository tasks to real files and not
 - `.agent/protocol.lock.yaml` owns current protocol provenance and version state.
 - Create and reconcile only paths declared by the protocol manifest.
 
+## EXTERNAL FEATURE INTAKE
+
+- Archive a received client or external feature batch in `.agent/client-log.md` as unverified
+  evidence before treating any item as scope; exclude secrets, raw identifiers, full PII, and
+  unrelated content.
+- Reconcile one coherent feature at a time. Audit implemented source/tests, accepted decisions, and
+  existing milestones/tasks before asking product questions.
+- Report whether the feature is fully supported, partially supported, or missing. Cite coverage,
+  identify the exact gap, and create no work for behavior that already fully covers the request.
+- Cross-question the human only on unresolved choices that materially affect behavior, boundaries,
+  states, data authority, UX, failure handling, effects, verification, ownership, or priority. Keep
+  questions incremental; do not guess or use a generic questionnaire.
+- Link accepted answers to a dated evidence anchor. Refine existing scope when its outcome is
+  unchanged; split independently verifiable work or create a new milestone only for a distinct
+  durable outcome. Leave all unreviewed items explicitly unverified.
+- Formalizing scope authorizes planning-record changes only, not implementation or external effects.
+
 ## CONVENTIONS
 
 Document only conventions proven by the target's source, configuration, and tests.

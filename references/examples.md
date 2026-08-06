@@ -75,3 +75,20 @@ A target locked at version `1.1.0` is initialized again against source version `
 validates and applies `1.1.0-to-1.2.0`, then `1.2.0-to-1.3.0`, verifies the result, and updates the
 lock last. If either migration is absent or conflicts with a project-owned edit, the agent stops with
 the old lock intact.
+
+## External feature intake
+
+A client sends a list containing recurring ordering hours, a temporary pause button, and stock
+controls. Archive the complete safe list under one dated unverified client-log anchor, then inspect
+recurring hours first.
+
+If the repository already stores weekly hours and validates pickup times but does not gate order
+confirmation by the current time, report it as partial coverage. Ask only the material questions:
+what remains possible while closed, whether future orders are allowed, how multiple daily windows
+work, and what the customer is told. Record the accepted answers under a dated anchor, refine an
+existing operational-policy task when it already owns that outcome, or create a distinct milestone
+only when no current outcome owns it.
+
+The pause and stock requests remain unverified until their own audits. If stock controls later prove
+to cover the request completely, cite that behavior and its tests without inventing a stock task.
+None of these planning changes authorizes implementation or deployment.
