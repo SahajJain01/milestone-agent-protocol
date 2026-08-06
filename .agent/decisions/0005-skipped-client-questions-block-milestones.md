@@ -2,7 +2,8 @@
 
 - **Status:** Accepted
 - **Date:** 2026-08-06
-- **Supersedes:** None
+- **Supersedes:** ADR 0004 only where an explicitly skipped material question with accepted milestone
+  ownership would otherwise remain unverified or become a generic discovery/decision task
 
 ## Context
 

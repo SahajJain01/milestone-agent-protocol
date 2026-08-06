@@ -3,20 +3,18 @@
 This is the authoritative record of unfinished work. Completed tasks and closed milestones leave this
 file; Git retains their history.
 
-## M-004 — Formalize external feature intake through cross-questioning
+## M-005 — Preserve skipped client questions through resolution
 
 **State:** Active
 
-**End goal:** Initialized repositories convert client or other external feature requests into
-accepted milestones and tasks only after auditing existing coverage and resolving material product
-ambiguity with the human one coherent feature at a time.
+**End goal:** Initialized repositories retain explicitly skipped material client questions as blocked
+tasks under their accepted owning milestones, hand them back in client-ready form, and absorb returned
+answers into milestone facts before unblocking those outcomes.
 
 **Close when:** The normative protocol, templates, migration, references, metadata, and adapter agree
-on an evidence-to-scope cross-questioning lifecycle, fresh and upgrade fixtures prove safe and
-idempotent adoption, all repository verification passes, and the focused 2.2.0 change is published.
-
-**Reopened:** 2026-08-06 — Accepted follow-up in `.agent/client-log.md` requires skipped material
-client questions to remain visible as milestone-blocking tasks until their answers are reconciled.
+on the skipped-question blocking and answer-reconciliation lifecycle, fresh and upgrade fixtures
+prove safe and idempotent adoption, all repository verification passes, and the focused 2.2.0 change
+is published.
 
 ### T-005 — Persist and resolve skipped client questions
 

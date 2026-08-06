@@ -56,4 +56,4 @@ the agent records the response as accepted evidence, incorporates the resulting 
 milestone, completes and removes the question task, and unblocks the milestone only after all such
 questions are resolved.
 
-**Absorbed outcome:** Reopened M-004/T-005 and ADR 0005.
+**Absorbed outcome:** M-005/T-005 and ADR 0005.
