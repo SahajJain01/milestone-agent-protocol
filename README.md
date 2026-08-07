@@ -5,6 +5,12 @@ authoritative unfinished-work record, immutable architectural decisions, evidenc
 provenance, scoped `AGENTS.md` guidance, and a deterministic way to initialize or upgrade the
 structure later.
 
+Closed milestones live in an indexed, append-only lifecycle archive while completed task bodies
+leave the active todo. This preserves milestone outcome contracts and closure/reopening evidence in
+the current tree without turning the archive into a second backlog or relying exclusively on Git
+history. Protocol 2.4.0 adds the archive through a contiguous migration for earlier locked releases;
+upgrades declare a forward-only coverage boundary instead of inventing older closures.
+
 External feature lists are reconciled through an evidence-to-scope loop: audit existing coverage,
 cross-question material product ambiguity one feature at a time, and formalize only accepted gaps
 without duplicating work or treating client input as implementation authorization. Material
@@ -12,6 +18,10 @@ questions the human explicitly skips remain visible as client-ready blocked task
 milestones; returned answers are absorbed into milestone facts before those tasks are removed.
 
 The protocol is agent-agnostic. A plugin is not required.
+
+This repository does not generate a visualization, frontend, hosting configuration, or deployment.
+The lifecycle archive is a platform-neutral data contract that a separately authorized read-only
+tool may consume in the future.
 
 ## Use from any LLM agent
 
@@ -39,8 +49,10 @@ compares the recorded version and digest with this repository, and either:
 ## Adopt a repository that predates protocol locks
 
 Repositories containing milestone-first records but no `.agent/protocol.lock.yaml` remain conflicts
-under an ordinary initialization request. Protocol 2.3.0 adds a separate, fail-closed adoption path
-for targets whose Git history proves they were deliberately structured before locks existed.
+under an ordinary initialization request. The current protocol declares a separate, fail-closed
+2.4.0 adoption path for targets whose Git history proves they were deliberately structured before
+locks existed. It creates a forward-only milestone archive only after the required audit and explicit
+authorization; it does not fabricate earlier closures.
 
 Ask the agent to audit first:
 

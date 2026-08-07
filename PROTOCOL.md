@@ -2,8 +2,9 @@
 
 This file is the canonical, platform-neutral contract for initializing and upgrading repository agent
 context. `protocol.yaml` identifies its version, digest, templates, migration chain, and declared
-legacy-adoption specifications. Adapters, templates, migrations, adoptions, and examples support
-this contract but do not override it.
+legacy-adoption specifications. The active todo and durable milestone lifecycle archive separate
+unfinished work from historical outcome records. Adapters, templates, migrations, adoptions, and
+examples support this contract but do not override it.
 
 ## Invocation
 
@@ -50,13 +51,17 @@ AGENTS.md
   todo.md
   protocol.lock.yaml
   client-log.md
+  milestones/
+    index.md
+    M-###.md
   decisions/
     index.md
     NNNN-short-name.md
 ```
 
 `client-log.md` may remain an empty documented archive when a project has no client or external
-evidence.
+evidence. `milestones/` contains only `index.md` until a milestone closes or a pre-archive closure is
+imported from stable evidence.
 
 Additional `.agent/context.md`, `.agent/philosophy.md`, `.agent/reference/`, or scoped child
 `AGENTS.md` files are allowed only when the target repository's actual complexity justifies them.
@@ -67,12 +72,15 @@ They never replace the canonical records above.
 Generate or reconcile root `AGENTS.md` so future agents use this precedence:
 
 1. `.agent/todo.md` owns unfinished milestones, closure contracts, and current tasks.
-2. `.agent/decisions/index.md` routes to task-relevant accepted decisions.
-3. `.agent/client-log.md` is read only for external provenance or communication processing.
-4. The smallest relevant source and test surface establishes implemented behavior.
+2. `.agent/milestones/index.md` routes to durable lifecycle records when historical identity,
+   closure, reopening, or reclosure matters.
+3. `.agent/decisions/index.md` routes to task-relevant accepted decisions.
+4. `.agent/client-log.md` is read only for external provenance or communication processing.
+5. The smallest relevant source and test surface establishes implemented behavior.
 
 Source and tests are authoritative for behavior. Decisions explain why. Todo is authoritative for
-unfinished work. External evidence is historical input, not automatic authorization.
+unfinished work. Milestone lifecycle records are authoritative for archived outcome contracts and
+post-archive lifecycle entries. External evidence is historical input, not automatic authorization.
 
 ## Milestones and tasks
 
@@ -80,7 +88,8 @@ unfinished work. External evidence is historical input, not automatic authorizat
 
 - Milestones use immutable sequential `M-###` IDs.
 - Tasks use immutable sequential `T-###` IDs.
-- Check the current file and Git history before allocating the next ID; never recycle an ID.
+- Check the active todo, milestone archive, decision records, and Git history before allocating the
+  next ID; never recycle an ID.
 - Every milestone has a concise name, a state of `Active` or `Blocked`, an `End goal`, and an
   observable `Close when`.
 - Every unfinished task has exactly one owning milestone, one state, real source or code anchors,
@@ -103,17 +112,74 @@ after every skipped client-question task is resolved and no other explicit block
 A task completes only when every acceptance bullet passes on the matching surface. A milestone
 closes only when its separate closure condition and every closure-required task pass. Runtime,
 provider, visual, infrastructure, physical, publication, or client gates cannot be replaced by local
-tests. Remove completed tasks and closed milestones from the active todo; Git retains their history.
+tests. Before removing a closed milestone and its completed tasks from the active todo, create or
+extend its indexed lifecycle record as described below. Do not retain completed task bodies in either
+the active todo or milestone archive.
 
-A closed milestone may be reopened when new evidence shows that unfinished work is necessary to
-restore or preserve its original end goal. Reconstruct the latest closed milestone definition from
-Git history under the same milestone ID and name, preserve its `End goal` and `Close when`, add a
-`Reopened` field containing an ISO date, reason, and stable evidence anchor, and add at least one
-unfinished task with a new, never-used task ID. Do not restore completed tasks or allocate a new
-milestone ID for the same outcome. If the work materially changes the original end goal, create a
-new milestone instead. A reopened milestone has an `Active` or `Blocked` state and follows the normal
-closure rules; remove it again after its closure condition and closure-required tasks pass. Git
-history retains each reopen and reclose cycle.
+## Milestone lifecycle archive
+
+`.agent/milestones/index.md` is the stable routing index for milestone lifecycle records. It declares
+one of these honest coverage boundaries:
+
+- **Fresh initialization:** complete from the recorded initialization timestamp because no earlier
+  protocol milestone history exists.
+- **Upgrade or legacy adoption:** forward-only from the recorded 2.4.0 reconciliation timestamp;
+  earlier closures remain Git-only unless imported later from stable evidence.
+
+The index contains at most one immutable row per milestone ID, linking
+`.agent/milestones/M-###.md`. Append the row when the record is first created; never remove, reorder,
+or repoint it. A missing record inside declared archive coverage is a conflict, not permission to
+reconstruct or overwrite it silently.
+
+The archive index and lifecycle records are state-bearing records, not regenerable boilerplate. If a
+2.4.0 target loses or locally diverges from one, recover only exact content proved by reachable Git or
+an explicitly supplied trusted backup; otherwise report a conflict. Same-version reconciliation must
+not replace an archive record from its template or infer its prior rows or events.
+
+Each lifecycle record has a stable header containing the milestone ID, name, original `End goal`, and
+original `Close when`. It then contains chronological, append-only entries numbered independently by
+type:
+
+- `Closure N` records `Closed` as an ISO date, a concise `Outcome`, stable `Closure evidence`, and
+  the completed task IDs. Task IDs are references only; do not copy task bodies, acceptance lists, or
+  a completed backlog into the archive.
+- `Reopening N` records `Reopened` as an ISO date, the reason unfinished work is necessary to restore
+  or preserve the original outcome, stable evidence, and every newly allocated task ID for that
+  reopen cycle.
+- `Correction N` records an ISO `Recorded` date, the lifecycle entry it `Corrects`, a reason, and the
+  corrected value or evidence. Corrections may repair evidenced lifecycle facts but may not disguise
+  a materially different outcome. Never silently edit or delete an existing lifecycle entry.
+
+Close a milestone as one staged semantic operation:
+
+1. Verify every task and the separate milestone closure contract on their required surfaces.
+2. Create and index the lifecycle record if this is its first archive cycle; otherwise validate that
+   its header exactly matches the historical milestone contract and that its latest event permits
+   closure.
+3. Append the next `Closure N` entry with the evidence and task IDs that actually passed.
+4. Remove the milestone and completed task bodies from `.agent/todo.md`.
+
+A closed milestone may be reopened only when new evidence shows that unfinished work is necessary to
+restore or preserve its archived end goal. Validate the existing lifecycle record, append the next
+`Reopening N` entry, and reconstruct the same milestone ID, name, `End goal`, and `Close when` in the
+active todo. Add a `Reopened` field containing the same ISO date, reason, and stable evidence anchor,
+and add at least one unfinished task with a new, never-used task ID. Do not restore completed tasks or
+allocate a new milestone ID for the same outcome. If the work materially changes the original end
+goal, create a new milestone instead. Reclosure appends the next `Closure N` entry before removing the
+milestone from the active todo again.
+
+When a milestone closed before archive coverage and has no lifecycle record, import it only as part
+of an authorized reopen or explicit historical-import request. Stable Git history must unambiguously
+prove the latest closed milestone ID, name, end goal, closure contract, closure event, and completed
+task IDs. Create the record with an `Imported` ISO date and the exact Git evidence anchors before
+appending any reopening entry. If history is shallow, missing, rewritten, conflicting, or otherwise
+ambiguous, stop without reopening or inventing facts.
+
+Todo and archive changes for closure, import, reopening, correction, and reclosure form one semantic
+unit. Construct the complete patch first. If interrupted, complete an exact missing half only when
+the existing todo/archive content and stable evidence prove the intended operation; otherwise stop
+and report the inconsistency. Git remains the audit trail and the fallback for explicitly uncovered
+pre-archive history, but it is not the only post-2.4.0 lifecycle store.
 
 ## Decisions
 
@@ -217,9 +283,9 @@ subsystem guidance from the protocol source repository into the target.
 
 ### 1. Inspect before writing
 
-Read the target's Git status, existing instruction files, `.agent/` records, source layout, tests,
-package/build metadata, and recent Git history. Record which candidate paths are absent, clean,
-dirty, generated, or already governed by nearer instructions.
+Read the target's Git status, existing instruction files, `.agent/` records including milestone
+lifecycle coverage, source layout, tests, package/build metadata, and recent Git history. Record which
+candidate paths are absent, clean, dirty, generated, or already governed by nearer instructions.
 
 When a lock is absent, inspect every reachable ref for historical
 `.agent/protocol.lock.yaml` content before classifying the target. Record the immutable current
@@ -235,9 +301,10 @@ target path requires conflict-aware merging or a no-write report.
 - **Same-version reconcile:** the lock version and canonical digest match the source.
 - **Upgrade:** the source version is newer and a complete ordered migration chain exists.
 - **Legacy-unlocked candidate:** no lock exists in the current tree or any reachable history, every
-  required pre-lock managed path is tracked, an applicable declared adoption specification exists,
-  and Git evidence may prove intentional milestone-first structure. A candidate remains no-write
-  until its full audit passes and the human explicitly authorizes adoption.
+  candidate path required by an applicable current-version adoption specification is tracked, any
+  current managed path that the specification may create is absent and conflict-free, and Git
+  evidence may prove intentional milestone-first structure. A candidate remains no-write until its
+  full audit passes and the human explicitly authorizes adoption.
 - **Fork or conflict:** the same version has a different digest, the target is newer, provenance is
   ambiguous, a lockless target is ineligible or unauthorized for adoption, a historical lock was
   deleted or malformed, or a required migration cannot prove safe ownership.
@@ -247,7 +314,8 @@ target path requires conflict-aware merging or a no-write report.
 For fresh targets, tailor the templates to repository evidence. For targets with a valid protocol
 lock, merge semantically:
 
-- preserve project-specific prose, IDs, evidence, source anchors, and accepted decisions;
+- preserve project-specific prose, IDs, milestone lifecycle entries, evidence, source anchors, and
+  accepted decisions;
 - add missing structural rules once;
 - update a rule in place when its identity is unchanged;
 - never replace a whole file merely because a template changed;
@@ -283,16 +351,27 @@ Migrations are immutable declarative specifications under `migrations/`. Each de
 target versions, preconditions, deterministic operations, verification, and abort behavior. They
 must preserve project-owned content and may not execute arbitrary downloaded code.
 
+Within an immutable historical migration, an unqualified reference to manifest paths, templates, or
+rules means the inventory of that migration's `to` release; never substitute paths introduced by a
+later source version into an earlier step. Apply the contiguous chain in order, then verify the final
+target against the current source manifest. This keeps older locked installations upgradeable when a
+later release adds a managed path.
+
 ### 4a. Adopt an eligible legacy-unlocked target
 
 Legacy adoption is not a semantic-version migration and never invents a prior version. Use an
-immutable specification declared under `adoptions` in `protocol.yaml`.
+immutable specification declared under `adoptions` in `protocol.yaml` whose target exactly matches
+the current source version. Older adoption specifications remain immutable provenance artifacts but
+are not applied by a newer source.
 
 Before any write, verify all of the following:
 
 - the target is a Git repository with an immutable baseline commit;
 - `.agent/protocol.lock.yaml` is absent from the current tree and every reachable ref;
-- every required target path other than the lock exists, is tracked, and is clean at the baseline;
+- every pre-lock candidate path required by the applicable specification exists, is tracked, and is
+  clean at the baseline;
+- each current managed path that the specification declares safe to create is absent at the baseline
+  and has no conflicting project-owned content;
 - a reachable evidence commit shows the intentional milestone-first conversion, including the todo,
   indexed decisions, and root instruction routing required by the applicable specification;
 - no record claims a conflicting protocol source, version, digest, or ownership boundary;
@@ -345,13 +424,16 @@ At minimum:
 - validate required paths and internal links;
 - validate unique milestone, task, and decision IDs;
 - validate milestone/task/decision field schemas;
+- validate archive coverage, one index row and path per archived milestone, immutable outcome
+  headers, ordered append-only lifecycle entries, referenced task IDs, and todo/archive consistency;
 - validate that accepted client-derived tasks and decisions link to a stable evidence anchor and that
   unresolved features from the same intake remain explicitly unverified;
 - validate that every unfinished skipped client-question task is `Blocked`, preserves client-ready
   wording, belongs to a `Blocked` milestone, and requires answer archival plus milestone-fact
   reconciliation before completion;
-- validate that reopened milestones reuse a historical milestone identity, include dated evidence,
-  preserve the historical outcome contract, and contain only newly allocated unfinished task IDs;
+- validate that reopened milestones reuse an archived or evidence-backed imported milestone identity,
+  include dated evidence, preserve the historical outcome contract, and contain only newly allocated
+  unfinished task IDs;
 - confirm every source anchor exists;
 - for legacy adoption, confirm the authorization tuple, absence of any historical lock, clean
   baseline, evidence commit, adoption decision, deterministic managed diff, and distinct lock
@@ -390,7 +472,12 @@ An implementation of this protocol is incomplete until it handles:
 - same-version digest fork and implicit downgrade rejection;
 - inaccessible or malformed source with no writes;
 - no changes outside declared protocol-managed paths;
-- reopen and reclose a historical milestone without recycling milestone or task identities;
+- close and archive a milestone before it leaves the todo, then reopen and reclose it without
+  recycling milestone or task identities or duplicating completed task bodies;
+- upgrade a 2.3.0 archive-free target with a forward-only coverage boundary and no invented history,
+  including the full chain from every older supported version;
+- import a pre-archive closed milestone only from unambiguous stable Git evidence and reject an
+  ambiguous or uncovered reconstruction without partial todo/archive changes;
 - reconcile a multi-feature external intake one feature at a time without promoting unanswered
   items, duplicating existing scope, or inventing work for fully supported behavior.
 - persist skipped material questions as milestone-blocking client-question tasks, produce the grouped
@@ -406,7 +493,8 @@ An implementation of this protocol is incomplete until it handles:
   remains unresolved, or treating a drafted question list as authorization to contact the client.
 - Replacing repository-specific `AGENTS.md` content with a generic template.
 - Copying the protocol source repository's product details into a target.
-- Creating duplicate planning systems or permanent completed-task archives.
+- Creating duplicate active planning systems or copying completed task bodies, acceptance lists, or
+  backlogs into milestone lifecycle records.
 - Reopening a milestone under a new ID, restoring its completed tasks, or changing its historical
   outcome contract to disguise a new outcome.
 - Recording secrets, full PII, raw prompts, or transcripts.

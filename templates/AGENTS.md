@@ -8,13 +8,14 @@ tests, and configuration. Remove all template guidance before finishing initiali
 ## CANONICAL CONTEXT
 
 1. Read `.agent/todo.md` for active milestones, closure conditions, and current tasks.
-2. Read `.agent/decisions/index.md`, then only task-relevant accepted decisions.
-3. Read `.agent/client-log.md` only for external provenance or communication processing.
-4. Inspect the smallest relevant source and test surface.
+2. Read `.agent/milestones/index.md` when historical milestone identity, closure, or reopening matters.
+3. Read `.agent/decisions/index.md`, then only task-relevant accepted decisions.
+4. Read `.agent/client-log.md` only for external provenance or communication processing.
+5. Inspect the smallest relevant source and test surface.
 
 Source and tests are authoritative for implemented behavior; decisions explain why; todo is
-authoritative for unfinished work. External evidence is historical input, not automatic
-authorization.
+authoritative for unfinished work; milestone lifecycle records own archived outcome contracts and
+closure history. External evidence is historical input, not automatic authorization.
 
 ## STRUCTURE
 
@@ -41,11 +42,17 @@ Add a compact table mapping common target-repository tasks to real files and not
   observable `Close when`.
 - Tasks use immutable `T-###` IDs, exactly one owning milestone, a state of `Active`, `Blocked`,
   `Queued`, or `Deferred`, real source anchors, dependencies when relevant, and acceptance bullets.
-- Allocate IDs after checking the current file and Git history; never recycle them.
-- Reopen a closed milestone only for work that restores or preserves its original end goal. Reuse
-  its historical ID and outcome contract, record a dated reason and evidence anchor, and add only
-  new task IDs. Create a new milestone when the end goal changes materially.
-- Remove completed tasks and closed milestones from the active todo; Git retains their history.
+- Allocate IDs after checking the active todo, milestone archive, decisions, and Git history; never
+  recycle them.
+- Before removing a closed milestone from the active todo, create or extend its indexed lifecycle
+  record with the immutable outcome contract, closure evidence, and completed task IDs. Do not copy
+  completed task bodies into the archive.
+- Reopen a closed milestone only for work that restores or preserves its archived original end goal.
+  Reuse its ID and outcome contract, append a dated evidence-backed reopening, and add only new task
+  IDs. Import a pre-archive closure from Git only when stable history is unambiguous; otherwise fail
+  closed. Create a new milestone when the end goal changes materially.
+- Remove completed tasks and closed milestones from the active todo after archive reconciliation;
+  Git remains the audit trail.
 - Local tests do not replace required runtime, provider, visual, infrastructure, physical,
   publication, or client evidence.
 - A milestone containing any unfinished skipped client-question task is `Blocked` and cannot close;
@@ -54,6 +61,8 @@ Add a compact table mapping common target-repository tasks to real files and not
 ## DOCUMENTATION RECORDS
 
 - `.agent/todo.md` owns unfinished work.
+- `.agent/milestones/` owns indexed, append-only milestone lifecycle records and an explicit
+  historical coverage boundary.
 - `.agent/decisions/` owns indexed immutable decisions.
 - `.agent/client-log.md` owns dated, source-attributed external evidence.
 - `.agent/protocol.lock.yaml` owns current protocol provenance and version state.
@@ -99,6 +108,6 @@ project.
 ## DEFINITION OF DONE
 
 - Requested behavior and task acceptance conditions pass on the matching surface.
-- Active todo and indexed decisions remain accurate.
+- Active todo, milestone archive, and indexed decisions remain accurate.
 - Relevant verification passes.
 - No unrelated files, secrets, generated artifacts, or unauthorized external effects are included.

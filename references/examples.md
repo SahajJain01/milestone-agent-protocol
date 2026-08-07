@@ -7,10 +7,15 @@ These examples illustrate `PROTOCOL.md`; they are not extra rules.
 ```markdown
 # Milestones and active work
 
-This is the authoritative record of unfinished work. Completed work remains in Git history.
+This is the authoritative record of unfinished work. Closed milestone lifecycles are archived;
+completed task bodies remain in Git history.
 
 No active milestones.
 ```
+
+In protocol 2.4.0, the target also has `.agent/milestones/index.md`. A fresh target marks its archive
+complete from initialization; an upgraded or adopted target marks it forward-only from the 2.4.0
+reconciliation timestamp so earlier Git-only closures are not falsely claimed.
 
 ## One active outcome
 
@@ -37,11 +42,41 @@ No active milestones.
 - A clean fixture installs and runs the package without repository-local dependencies.
 ```
 
+## Closed and archived outcome
+
+When `M-004` passes its closure contract, create `.agent/milestones/M-004.md`, add its one stable
+index row, and then remove the milestone and completed task body from the active todo:
+
+```markdown
+# M-004 — Publish a verified command-line release
+
+**End goal:** Users can install and run a reproducible signed release.
+
+**Close when:** Package installation, signature verification, and a clean-machine smoke test pass.
+
+## Closure 1
+
+**Closed:** 2026-07-30
+
+**Outcome:** The signed package installs and runs on the supported clean-machine fixture.
+
+**Closure evidence:**
+
+- Release verification run `build-4821` and signed artifact manifest at commit `abc1234`.
+
+**Completed task IDs:**
+
+- T-011
+```
+
+The archive keeps only the task ID. The completed task body and full diff remain in Git history.
+
 ## Reopened outcome
 
 Suppose `M-004` was closed and removed after `T-011` completed. Weeks later, issue `#482` shows that
-the published command-line release fails on a supported clean machine. Reconstruct the latest closed
-definition from Git history and return it to the active todo:
+the published command-line release fails on a supported clean machine. Validate the indexed record,
+append `Reopening 1` with the issue evidence and new task ID `T-019`, then return the matching outcome
+contract to the active todo:
 
 ```markdown
 ## M-004 — Publish a verified command-line release
@@ -69,9 +104,14 @@ machine.
 - The original package, signature, and clean-machine closure checks pass again.
 ```
 
-`M-004` keeps its identity and outcome contract, while `T-019` is new. `T-011` remains completed in
-Git history. If the requested work instead introduces a different release outcome, allocate a new
-milestone.
+`M-004` keeps its identity and outcome contract, while `T-019` is new. `T-011` remains a reference in
+the archive and its body remains in Git history. Reclosure appends `Closure 2` before removing the
+milestone from the todo again. If the requested work instead introduces a different release outcome,
+allocate a new milestone.
+
+If `M-004` closed before the target's archive coverage began, first reconstruct and import its record
+from stable Git commits. Add an `Imported` date and those commit anchors to `Closure 1`. If the latest
+contract or closure cannot be proved unambiguously, stop without reopening.
 
 ## Safe repeated initialization
 

@@ -1,8 +1,8 @@
 name: milestone-agent-protocol
 schema_version: 2
-version: 2.3.0
+version: 2.4.0
 entrypoint: PROTOCOL.md
-entrypoint_digest: sha256:026428857e08b3894c17d4013e9c75bc63ad2e8277cf0f6a479e6b67e8451563
+entrypoint_digest: sha256:09ecedeca32b5c2ebbae7a415a02056ec276d3a455478ca586a48d12ef0a6423
 canonical_repository: https://github.com/SahajJain01/milestone-agent-protocol
 default_ref: main
 required_target_paths:
@@ -10,20 +10,27 @@ required_target_paths:
   - .agent/todo.md
   - .agent/protocol.lock.yaml
   - .agent/client-log.md
+  - .agent/milestones/index.md
   - .agent/decisions/index.md
 templates:
   AGENTS.md:
     file: templates/AGENTS.md
-    digest: sha256:4717fc196689cb7e6d738f79dfb763d9940a5424786a102dd5787fc812cb38be
+    digest: sha256:62914d49d174d86547d054130374261ee3c0df54f0dc742714e2893a17875b6c
   .agent/todo.md:
     file: templates/todo.md
-    digest: sha256:2d6a576cc0d1c12fec4a07798ddd7f443e84fd3c0d49d583f01d8b03d6f4958a
+    digest: sha256:2dae42a7f61ce7cfb6433a357a48036f54bc9bb53d109ed9f2f1c7599380b266
   .agent/protocol.lock.yaml:
     file: templates/protocol.lock.yaml
-    digest: sha256:e830a9a2904cc6bbf04f14a789b4c620b6bff1f6725da0045c84f2d62001b6e4
+    digest: sha256:a0b11a1faba8c0dd19b3b341ac6a6300a52d345b32d4da035e8ae5575af78771
   .agent/client-log.md:
     file: templates/client-log.md
     digest: sha256:e74fc239dc6054d74b31392a1802d2dd731412d79c58cd7d63fac2945ed2f2a4
+  .agent/milestones/index.md:
+    file: templates/milestones-index.md
+    digest: sha256:234f6b0082ba0d961297c5dd51bc65b249feebfb22e1b0c15a0534efadeaca77
+  .agent/milestones/M-###.md:
+    file: templates/milestone.md
+    digest: sha256:a7ec8f71c7fc6e57b4c4fa70bbfe82d8fe3fc9de9fdd8d5fc322027052ef69a5
   .agent/decisions/index.md:
     file: templates/decisions-index.md
     digest: sha256:5ec9911fe93ed3dbddc4e50806e7303ea255c5de000ac16c3c239dd7c3b86a26
@@ -51,12 +58,22 @@ migrations:
     to: 2.3.0
     file: migrations/2.2.0-to-2.3.0.md
     digest: sha256:eb23b67c54d38e19e1543cceb52dc1b723400d28e2229bb86af3a645a678cba5
+  - id: 2.3.0-to-2.4.0
+    from: 2.3.0
+    to: 2.4.0
+    file: migrations/2.3.0-to-2.4.0.md
+    digest: sha256:ab06ac81dedd2363a7eed3c227aa41873efba85d1213e03b245bc246f83d9d49
 adoptions:
   - id: legacy-unlocked-to-2.3.0
     from: legacy-unlocked
     to: 2.3.0
     file: adoptions/legacy-unlocked-to-2.3.0.md
     digest: sha256:285ce86d07e78c104992cde510c154208507c8aad72b59c4e493e776d2ed85f3
+  - id: legacy-unlocked-to-2.4.0
+    from: legacy-unlocked
+    to: 2.4.0
+    file: adoptions/legacy-unlocked-to-2.4.0.md
+    digest: sha256:b0018004fdeca485191ce51dc1c69d3a61977f3750a84a93c7d59cde8fa30d9e
 target_scope:
   manage_declared_paths_only: true
   preserve_other_paths: true

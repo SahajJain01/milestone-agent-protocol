@@ -57,3 +57,27 @@ milestone, completes and removes the question task, and unblocks the milestone o
 questions are resolved.
 
 **Absorbed outcome:** M-005/T-005 and ADR 0005.
+
+## 2026-08-07 — Unverified milestone-visualization proposal
+
+**Source:** Current Codex task.
+
+The user proposed a frontend that would expose repository milestones for greater customer
+transparency. The audit found that the current protocol keeps only unfinished milestones in the
+working tree and relies on Git history for closed milestone definitions and reopen/reclose cycles,
+which leaves no stable current-tree milestone history for a future read-only projection.
+
+**Disposition:** Visualization, frontend generation, hosting, and publication are deferred. The
+underlying milestone-history gap was reviewed separately and accepted below.
+
+## 2026-08-07 — Accepted durable milestone lifecycle archive
+
+**Source:** Current Codex task following review of the reopening contract.
+
+The user requested a protocol revision that preserves completed milestone lifecycle records outside
+the active todo, keeps visualization out of the present scope, and provides backward-compatible
+migration for repositories initialized with earlier protocol versions. Existing historical closures
+must not be invented during upgrade; Git-only milestones may be imported later only from stable,
+unambiguous evidence.
+
+**Absorbed outcome:** M-007/T-007 and ADR 0007.

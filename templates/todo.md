@@ -1,7 +1,8 @@
 # Milestones and active work
 
 This is the authoritative record of unfinished work. Milestones are ordered by current priority.
-Completed tasks and closed milestones leave this file; Git retains their history.
+Completed tasks and closed milestones leave this file after the milestone lifecycle archive is
+updated. Git retains completed task bodies and the audit history.
 
 <!--
 Do not invent work to populate this template. If repository evidence shows no unfinished work,
@@ -20,10 +21,15 @@ independently answerable question, preserve its exact client-ready wording, and 
 and affected scope records. Then remove the completed question task and restore `Active` only when
 no other blocker remains. Do not create a speculative milestone if no accepted outcome exists yet.
 
-To reopen a closed milestone, reconstruct its latest historical definition under the same milestone
-ID and name, preserve `End goal` and `Close when`, add
+To reopen a closed milestone, read its indexed `.agent/milestones/M-###.md` lifecycle record, restore
+the same ID, name, `End goal`, and `Close when`, append a reopening entry to that record, and add
 `**Reopened:** YYYY-MM-DD — Reason and stable evidence anchor.`, and add at least one unfinished task
-with a new, never-used task ID. Do not copy completed tasks back into this file.
+with a new, never-used task ID. If the milestone predates archive coverage, import it first only when
+stable Git evidence is unambiguous. Do not copy completed tasks back into this file.
+
+Before removing a closed milestone, create or extend its indexed lifecycle record with the original
+outcome contract, the next numbered closure entry, stable closure evidence, and completed task IDs.
+Do not copy completed task bodies into the archive.
 
 ## M-001 — Observable outcome
 
