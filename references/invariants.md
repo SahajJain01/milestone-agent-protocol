@@ -6,7 +6,7 @@ This reference is explanatory. `PROTOCOL.md` is normative.
 - One owning milestone per unfinished task.
 - Every open milestone is explicitly `Active` or `Blocked`; unresolved skipped client questions make
   their owning milestone `Blocked` until resolution.
-- Immutable milestone, task, decision, and migration identities.
+- Immutable milestone, task, decision, migration, and adoption identities.
 - Reopening restores a historical milestone identity and outcome contract while adding only new task
   identities.
 - Observable outcome closure remains separate from implementation completion.
@@ -21,5 +21,8 @@ This reference is explanatory. `PROTOCOL.md` is normative.
 - Repository-specific guidance is discovered, never copied from the protocol source.
 - Reinitialization preserves project content and converges without duplicate records.
 - Protocol state is recorded by the current lock and Git history.
+- A lockless target is adopted only through a declared legacy specification, an immutable clean
+  baseline, a reachable pre-lock evidence commit, and explicit human confirmation of that exact
+  tuple. Adoption never invents a prior version or bypasses a historical lock.
 - Same semantic version with a different digest is a fork, not an invisible update.
-- A lock advances only after the corresponding structure and migrations verify.
+- A lock advances only after the corresponding structure, migrations, or adoption verifies.

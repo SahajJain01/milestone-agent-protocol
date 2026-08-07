@@ -10,3 +10,4 @@ silently rewriting history.
 | 0003 | [Reopen closed milestones under their original identity](0003-reopen-closed-milestones.md) | Post-closure work, identity reuse, and task history | Accepted |
 | 0004 | [Cross-question external feature evidence before accepting scope](0004-cross-question-feature-evidence.md) | Client/external feature intake, coverage audit, and milestone/task promotion | Accepted |
 | 0005 | [Preserve skipped client questions as milestone blockers](0005-skipped-client-questions-block-milestones.md) | Client follow-up tasks, milestone blocking, and answer reconciliation | Accepted |
+| 0006 | [Allow explicit evidence-backed adoption of pre-lock repositories](0006-explicit-legacy-unlocked-adoption.md) | Legacy unlocked provenance, adoption gates, and fail-closed recovery | Accepted |

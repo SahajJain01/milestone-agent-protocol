@@ -1,8 +1,9 @@
 # Milestone Agent Protocol
 
 This file is the canonical, platform-neutral contract for initializing and upgrading repository agent
-context. `protocol.yaml` identifies its version, digest, templates, and migration chain. Adapters,
-templates, migrations, and examples support this contract but do not override it.
+context. `protocol.yaml` identifies its version, digest, templates, migration chain, and declared
+legacy-adoption specifications. Adapters, templates, migrations, adoptions, and examples support
+this contract but do not override it.
 
 ## Invocation
 
@@ -19,13 +20,20 @@ commits, pushes, deployments, messages, production effects, or unrelated cleanup
 Initialization is a reconcile operation. A target may be fresh, initialized by an older released
 protocol version, locally adapted, or dirty. Never assume it is empty.
 
+An ordinary initialize or update request does not authorize adoption of existing managed records
+that lack a lock. After an eligible legacy-unlocked candidate is audited, require separate explicit
+human confirmation naming the canonical source, requested ref, resolved source commit, target
+baseline commit, and historical evidence commit. That confirmation still authorizes only
+protocol-record changes.
+
 ## Source validation
 
 Before changing the target:
 
 1. Resolve the supplied repository URL and read `protocol.yaml`.
 2. Read the declared `entrypoint` and verify its SHA-256 digest.
-3. Validate the protocol name, semantic version, required template mappings, and migration inventory.
+3. Validate the protocol name, manifest schema, semantic version, required template mappings,
+   migration inventory, and adoption inventory, including every declared digest.
 4. Resolve the source ref to an immutable commit when the hosting service exposes one.
 5. Fail closed with no writes if the source is inaccessible, malformed, internally inconsistent, or
    authenticated in a way the agent cannot safely preserve.
@@ -213,6 +221,10 @@ Read the target's Git status, existing instruction files, `.agent/` records, sou
 package/build metadata, and recent Git history. Record which candidate paths are absent, clean,
 dirty, generated, or already governed by nearer instructions.
 
+When a lock is absent, inspect every reachable ref for historical
+`.agent/protocol.lock.yaml` content before classifying the target. Record the immutable current
+baseline commit and the commits that introduced or converted the managed records.
+
 Preserve all user-authored and unrelated changes. Never stash, reset, checkout over, delete, or
 silently reformat them. A dirty worktree does not prevent non-overlapping protocol work, but a dirty
 target path requires conflict-aware merging or a no-write report.
@@ -222,9 +234,13 @@ target path requires conflict-aware merging or a no-write report.
 - **Fresh:** no protocol lock or protocol-managed paths exist.
 - **Same-version reconcile:** the lock version and canonical digest match the source.
 - **Upgrade:** the source version is newer and a complete ordered migration chain exists.
+- **Legacy-unlocked candidate:** no lock exists in the current tree or any reachable history, every
+  required pre-lock managed path is tracked, an applicable declared adoption specification exists,
+  and Git evidence may prove intentional milestone-first structure. A candidate remains no-write
+  until its full audit passes and the human explicitly authorizes adoption.
 - **Fork or conflict:** the same version has a different digest, the target is newer, provenance is
-  ambiguous, protocol-managed paths exist without a valid lock, or a required migration cannot prove
-  safe ownership.
+  ambiguous, a lockless target is ineligible or unauthorized for adoption, a historical lock was
+  deleted or malformed, or a required migration cannot prove safe ownership.
 
 ### 3. Build a staged change set
 
@@ -237,6 +253,11 @@ lock, merge semantically:
 - never replace a whole file merely because a template changed;
 - never duplicate milestones, tasks, decisions, headings, or protocol blocks;
 - identify local divergences explicitly and stop before modifying conflicting content.
+
+For an authorized legacy-unlocked target, use only the applicable declared adoption specification.
+Preserve project prose, IDs, evidence, and unrelated paths; add only missing current structural
+rules; and create an indexed target decision that records the adoption without claiming a prior
+semantic version.
 
 Construct and inspect the complete patch before applying it. Apply protocol changes first and write
 `.agent/protocol.lock.yaml` last. If validation fails, leave the previous lock version in place and
@@ -253,12 +274,52 @@ Read `.agent/protocol.lock.yaml` when present.
 - **Skipped versions:** allowed only when every intermediate migration is present and chainable.
 - **Same version, different digest:** treat as a fork. Stop and ask which source/ref is authoritative.
 - **Target newer than source:** do not downgrade implicitly.
-- **Missing or malformed lock with protocol-managed paths present:** stop without writes. This
-  protocol requires verified provenance before reconciling managed paths.
+- **Absent lock with protocol-managed paths present:** follow 4a only for an eligible declared
+  legacy-unlocked candidate with exact post-audit authorization; otherwise stop without writes.
+- **Malformed current lock or any deleted/malformed historical lock:** stop without writes. Legacy
+  adoption cannot bypass versioned provenance.
 
 Migrations are immutable declarative specifications under `migrations/`. Each declares its source and
 target versions, preconditions, deterministic operations, verification, and abort behavior. They
 must preserve project-owned content and may not execute arbitrary downloaded code.
+
+### 4a. Adopt an eligible legacy-unlocked target
+
+Legacy adoption is not a semantic-version migration and never invents a prior version. Use an
+immutable specification declared under `adoptions` in `protocol.yaml`.
+
+Before any write, verify all of the following:
+
+- the target is a Git repository with an immutable baseline commit;
+- `.agent/protocol.lock.yaml` is absent from the current tree and every reachable ref;
+- every required target path other than the lock exists, is tracked, and is clean at the baseline;
+- a reachable evidence commit shows the intentional milestone-first conversion, including the todo,
+  indexed decisions, and root instruction routing required by the applicable specification;
+- no record claims a conflicting protocol source, version, digest, or ownership boundary;
+- IDs, links, schemas, and project-owned content can be reconciled without guessing material facts;
+- the complete proposed protocol-record patch and every local divergence are shown to the human.
+
+Then require explicit human confirmation naming the canonical source, requested ref, resolved source
+commit, baseline commit, and evidence commit. Generic initialization, an earlier client message, or
+the existence of similar files is insufficient.
+
+After confirmation:
+
+1. Validate the adoption specification digest and every source artifact again.
+2. Add the next indexed target decision as the durable authorization and recovery anchor. It records
+   the specification ID, source/ref, resolved source commit, baseline commit, evidence commit, and
+   the fact that no prior semantic version is claimed.
+3. Reconcile only declared protocol paths and structural rules to the current version. Preserve all
+   project-specific prose, immutable IDs, evidence, and unrelated paths.
+4. Verify the complete target, target-specific safe gate, and idempotent post-adoption reconcile.
+5. Write `.agent/protocol.lock.yaml` last. Record the adoption separately from migrations; do not
+   claim historical migration IDs the target never applied.
+
+If an interruption occurs after the authorization decision but before the lock, resume only when the
+decision exactly matches the validated source/specification/baseline/evidence tuple and every managed
+diff from the recorded baseline is an exact subset of the deterministic adoption patch. Otherwise
+stop without creating a lock. A deleted or malformed historical lock is never recoverable through
+legacy adoption.
 
 ### 5. Record provenance
 
@@ -268,6 +329,9 @@ After all checks pass, create or update `.agent/protocol.lock.yaml` with:
 - resolved immutable commit when available;
 - protocol version and verified entrypoint digest;
 - last applied version and ordered migration IDs;
+- ordered adoption IDs, empty for non-adopted targets;
+- for legacy adoption, the specification ID, adoption timestamp, baseline commit, evidence commit,
+  and indexed authorization-decision path;
 - structurally managed paths and rule IDs;
 - known local divergences;
 - initialization and last-reconciliation timestamps.
@@ -289,6 +353,9 @@ At minimum:
 - validate that reopened milestones reuse a historical milestone identity, include dated evidence,
   preserve the historical outcome contract, and contain only newly allocated unfinished task IDs;
 - confirm every source anchor exists;
+- for legacy adoption, confirm the authorization tuple, absence of any historical lock, clean
+  baseline, evidence commit, adoption decision, deterministic managed diff, and distinct lock
+  provenance all match the declared specification;
 - confirm no path outside the declared protocol scope was introduced;
 - confirm pre-existing user-file hashes or diffs are unchanged outside authorized protocol paths;
 - run `git diff --check`;
@@ -298,8 +365,9 @@ Do not claim external runtime or client acceptance based on local structural che
 
 ### 7. Report without expanding authority
 
-Report the detected mode, source/version/digest, files added or reconciled, migrations applied,
-divergences or blockers, and verification evidence. Commit or push only when explicitly authorized.
+Report the detected mode, source/version/digest, files added or reconciled, migrations or adoptions
+applied, provenance tuple, divergences or blockers, and verification evidence. Commit or push only
+when explicitly authorized.
 
 ## Required idempotence and upgrade cases
 
@@ -311,6 +379,14 @@ An implementation of this protocol is incomplete until it handles:
 - interrupted upgrade with the old lock retained and a safe rerun;
 - missing migration or failed precondition with no writes;
 - local modification to a migration target with a conflict report, not overwrite;
+- eligible legacy-unlocked adoption with explicit authorization and no invented prior version;
+- a generic initialize request against an eligible legacy candidate that reports the audit but makes
+  no writes until explicit authorization;
+- rejection of a deleted/malformed historical lock, incomplete legacy path set, dirty managed path,
+  conflicting source claim, ambiguous evidence commit, or unauthorized adoption;
+- interrupted legacy adoption that resumes only from an exact authorization decision and
+  deterministic operation-owned diff;
+- post-adoption same-version reconciliation with zero diff;
 - same-version digest fork and implicit downgrade rejection;
 - inaccessible or malformed source with no writes;
 - no changes outside declared protocol-managed paths;
@@ -335,4 +411,6 @@ An implementation of this protocol is incomplete until it handles:
   outcome contract to disguise a new outcome.
 - Recording secrets, full PII, raw prompts, or transcripts.
 - Hiding conflicts with stashes, resets, forced checkouts, or broad generated rewrites.
-- Updating the protocol lock before the corresponding structure and migrations verify.
+- Treating a generic initialization request as legacy-adoption authorization, inventing a prior
+  protocol version, or using adoption to bypass a deleted or malformed historical lock.
+- Updating the protocol lock before the corresponding structure, migrations, or adoption verifies.

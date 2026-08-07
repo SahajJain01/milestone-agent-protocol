@@ -80,6 +80,26 @@ validates and applies `1.1.0-to-1.2.0`, then `1.2.0-to-1.3.0`, verifies the resu
 lock last. If either migration is absent or conflicts with a project-owned edit, the agent stops with
 the old lock intact.
 
+## Explicit pre-lock adoption
+
+A Git repository already contains tracked `AGENTS.md`, `.agent/todo.md`,
+`.agent/client-log.md`, and `.agent/decisions/index.md`, but no protocol lock. Reachable history shows
+that one commit deliberately converted the repository to milestone-first work records, and no ref
+has ever contained `.agent/protocol.lock.yaml`.
+
+An ordinary initialization reports a legacy-unlocked candidate and writes nothing. The agent
+validates the declared adoption specification, confirms the managed paths are clean at baseline
+commit `B`, identifies conversion commit `E`, constructs the complete protocol-record patch, and
+presents the canonical source, requested ref, resolved source commit, plus `B` and `E`. Only after
+the human explicitly confirms that tuple does the agent add an indexed adoption decision, reconcile
+current structural rules, verify the target, and write the lock last. The lock records the adoption
+ID and decision anchor with no invented prior version. A second initialization is a locked
+same-version no-op.
+
+If any reachable ref contains a historical lock, the managed paths are dirty, the conversion commit
+is ambiguous, or existing records claim a conflicting source, adoption aborts with no lock. Deleting
+a lock can never turn a versioned target into a legacy candidate.
+
 ## External feature intake
 
 A client sends a list containing recurring ordering hours, a temporary pause button, and stock
