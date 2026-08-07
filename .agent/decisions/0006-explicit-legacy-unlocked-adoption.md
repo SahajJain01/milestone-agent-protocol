@@ -28,7 +28,7 @@ the default conflict behavior or overwrite project-specific content.
   managed record, clean managed paths at an immutable baseline commit, a reachable evidence commit
   showing the intended milestone-first structure, and no conflicting protocol-source claim.
 - Present the candidate audit before writing and require explicit human authorization naming the
-  canonical source/ref, baseline commit, and evidence commit.
+  canonical source, requested ref, resolved source commit, baseline commit, and evidence commit.
 - Preserve project prose, IDs, evidence, and unrelated paths; reconcile only declared structural
   rules; add an indexed target decision documenting adoption; verify the complete patch; and write
   `.agent/protocol.lock.yaml` last.

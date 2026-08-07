@@ -57,6 +57,9 @@ Add a compact table mapping common target-repository tasks to real files and not
 - `.agent/decisions/` owns indexed immutable decisions.
 - `.agent/client-log.md` owns dated, source-attributed external evidence.
 - `.agent/protocol.lock.yaml` owns current protocol provenance and version state.
+- Never synthesize a missing protocol lock during ordinary reconciliation. Legacy-unlocked adoption
+  requires a declared adoption specification, a clean evidence-backed Git audit, and explicit human
+  authorization after that audit; otherwise the target remains a conflict.
 - Create and reconcile only paths declared by the protocol manifest.
 
 ## EXTERNAL FEATURE INTAKE

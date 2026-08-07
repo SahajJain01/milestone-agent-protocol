@@ -32,8 +32,28 @@ compares the recorded version and digest with this repository, and either:
 
 - performs a no-op conformance audit,
 - applies every required migration in order,
+- reports an eligible pre-lock adoption candidate and waits for explicit confirmation,
 - or stops safely when it finds a fork, downgrade, incomplete migration chain, or conflicting local
   change.
+
+## Adopt a repository that predates protocol locks
+
+Repositories containing milestone-first records but no `.agent/protocol.lock.yaml` remain conflicts
+under an ordinary initialization request. Protocol 2.3.0 adds a separate, fail-closed adoption path
+for targets whose Git history proves they were deliberately structured before locks existed.
+
+Ask the agent to audit first:
+
+```text
+Audit this repository for legacy-unlocked adoption using
+https://github.com/SahajJain01/milestone-agent-protocol
+```
+
+The agent validates the declared adoption specification and reports the canonical source, requested
+ref, resolved source commit, immutable target baseline commit, historical evidence commit, exact
+managed-path patch, and local divergences without writing. Adoption begins only after the human
+explicitly confirms that complete tuple. The resulting target decision and lock record adoption
+without inventing a prior version; all later runs use normal locked reconciliation.
 
 ## Optional Codex command
 
@@ -52,7 +72,9 @@ Use $initialize-agent-protocol to initialize this repository.
 ```
 
 The installed skill fetches the same public protocol; it does not depend on the rest of its original
-checkout remaining on disk. `PROTOCOL.md` remains the canonical contract for every agent.
+checkout remaining on disk. It can audit a declared legacy-unlocked candidate but still waits for
+the protocol-required explicit confirmation before writing. `PROTOCOL.md` remains the canonical
+contract for every agent.
 
 ## License
 

@@ -1,8 +1,8 @@
 name: milestone-agent-protocol
-schema_version: 1
-version: 2.2.0
+schema_version: 2
+version: 2.3.0
 entrypoint: PROTOCOL.md
-entrypoint_digest: sha256:f4ddc4371b17ec6fe98c013e2f25b75519ce82497692cadee97fc704194f164b
+entrypoint_digest: sha256:026428857e08b3894c17d4013e9c75bc63ad2e8277cf0f6a479e6b67e8451563
 canonical_repository: https://github.com/SahajJain01/milestone-agent-protocol
 default_ref: main
 required_target_paths:
@@ -14,13 +14,13 @@ required_target_paths:
 templates:
   AGENTS.md:
     file: templates/AGENTS.md
-    digest: sha256:53a47a405c4411b7484c713ed1c4c05607cb175cc17c6190f069c0292a8e486d
+    digest: sha256:4717fc196689cb7e6d738f79dfb763d9940a5424786a102dd5787fc812cb38be
   .agent/todo.md:
     file: templates/todo.md
     digest: sha256:2d6a576cc0d1c12fec4a07798ddd7f443e84fd3c0d49d583f01d8b03d6f4958a
   .agent/protocol.lock.yaml:
     file: templates/protocol.lock.yaml
-    digest: sha256:472bf3d8e39d7e58638370ece482961173b32f3406e95103691e8b289f05a48e
+    digest: sha256:e830a9a2904cc6bbf04f14a789b4c620b6bff1f6725da0045c84f2d62001b6e4
   .agent/client-log.md:
     file: templates/client-log.md
     digest: sha256:e74fc239dc6054d74b31392a1802d2dd731412d79c58cd7d63fac2945ed2f2a4
@@ -46,6 +46,17 @@ migrations:
     to: 2.2.0
     file: migrations/2.1.0-to-2.2.0.md
     digest: sha256:8cb96dc2be5fc9513740426e667310429845d4d0ec64001a9a9ea2a5f2287d8e
+  - id: 2.2.0-to-2.3.0
+    from: 2.2.0
+    to: 2.3.0
+    file: migrations/2.2.0-to-2.3.0.md
+    digest: sha256:eb23b67c54d38e19e1543cceb52dc1b723400d28e2229bb86af3a645a678cba5
+adoptions:
+  - id: legacy-unlocked-to-2.3.0
+    from: legacy-unlocked
+    to: 2.3.0
+    file: adoptions/legacy-unlocked-to-2.3.0.md
+    digest: sha256:285ce86d07e78c104992cde510c154208507c8aad72b59c4e493e776d2ed85f3
 target_scope:
   manage_declared_paths_only: true
   preserve_other_paths: true
