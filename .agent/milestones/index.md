@@ -8,3 +8,4 @@ closures remain Git-only unless imported from stable evidence.
 
 | Milestone | Record |
 | --- | --- |
+| M-007 — Persist milestone lifecycle history | [Lifecycle record](M-007.md) |

@@ -1,13 +1,13 @@
 protocol:
   source: https://github.com/SahajJain01/milestone-agent-protocol
   requested_ref: main
-  resolved_commit: pending-publication
+  resolved_commit: 0d500674ac3b503cde396984265fb7c4cc9ac9f2
   version: 2.4.0
   entrypoint: PROTOCOL.md
   entrypoint_digest: sha256:09ecedeca32b5c2ebbae7a415a02056ec276d3a455478ca586a48d12ef0a6423
 state:
   initialized_at: 2026-07-29T08:02:53Z
-  last_reconciled_at: 2026-08-07T10:14:09Z
+  last_reconciled_at: 2026-08-07T10:35:21Z
   last_applied: 2.4.0
   applied_migrations:
     - 1.0.0-to-2.0.0
